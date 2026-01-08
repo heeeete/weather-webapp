@@ -1,0 +1,59 @@
+---
+description: Next.js(App Router) + FSD 아키텍처 규칙 (라우팅은 app/, UI는 app/ 밖)
+globs:
+  - app/**/*
+  - pages/**/*
+  - features/**/*
+  - widgets/**/*
+  - entities/**/*
+  - shared/**/*
+  - src/app/**/*
+  - src/pages/**/*
+  - src/features/**/*
+  - src/widgets/**/*
+  - src/entities/**/*
+  - src/shared/**/*
+---
+
+# 프로젝트 구조 (FSD + App Router)
+
+- 라우팅/레이아웃은 Next.js App Router 규칙에 따라 `app/`에서만 관리한다.
+- 화면 UI/도메인 구성은 FSD 레이어로 `app/` 밖에서 구성한다:
+  - pages/: 라우트 단위 화면(페이지 조합)
+  - widgets/: 페이지에서 재사용되는 큰 블록(헤더, 사이드바, 섹션 등)
+  - features/: 사용자 행위/시나리오 단위(로그인, 검색, 장바구니 담기 등)
+  - entities/: 도메인 엔티티(User, Place, Weather 등) 모델/타입/데이터 가공 로직(필요 시 최소 UI)
+  - shared/: 공용 UI/유틸/라이브러리/설정(가장 하위)
+
+# 의존성 방향(중요)
+
+- 상위 레이어는 하위 레이어에만 의존한다.
+  - app → pages → widgets → features → entities → shared
+- 역방향 의존(예: shared가 entities를 import, entities가 features import)은 금지.
+
+# Public API 규칙 (Barrel)
+
+- 각 slice는 외부에 노출할 것만 `index.ts`로 export한다.
+  - 예: `features/auth/login/index.ts`에서 `LoginForm`만 export
+- 외부 import는 반드시 public API 경로를 사용한다.
+  - ✅ `import { LoginForm } from '@/features/auth/login'`
+  - ❌ `import { LoginForm } from '@/features/auth/login/ui/LoginForm'`
+
+# app/ 디렉터리 규칙 (라우팅 전용)
+
+- `app/`에는 가능한 한 "라우팅/레이아웃 연결 코드"만 둔다.
+  - page.tsx / layout.tsx / loading.tsx / error.tsx / not-found.tsx / route.ts
+- `app/**/page.tsx`는 페이지 조합만 담당한다:
+  - pages/widgets/components를 import해 조립
+  - 비즈니스 로직/복잡한 상태는 features/entities로 이동
+- `app/` 안에 재사용 UI를 만들지 않는다(원칙).
+  - 예외: 해당 라우트에서만 쓰는 매우 로컬한 조각은 `app/(segment)/_ui` 같은 로컬 폴더로 두되, 외부로 export 금지.
+
+# Server/Client 컴포넌트 원칙
+
+- 기본은 Server Component(가능하면 서버에서 조립).
+- 클라이언트가 꼭 필요할 때만 `"use client"`:
+  - React client hook(useState/useEffect/useRef 등)
+  - 브라우저 API(window/document) 사용
+  - 인터랙션 중심 UI
+- 서버 전용 로직(DB/비밀키/토큰 검증)은 client 컴포넌트로 새지 않게 한다.
