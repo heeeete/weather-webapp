@@ -34,7 +34,7 @@ export function useDistrictSearch(options: Options) {
     setOpen(false);
     try {
       const data = await getGeocode(district);
-      router.push(`/location/${data.lon},${data.lat}`);
+      router.push(`/weather/${data.lon}/${data.lat}`);
     } catch (error) {
       console.error('selectDistrict', error);
     }
