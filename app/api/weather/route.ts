@@ -21,14 +21,11 @@ export async function GET(req: Request) {
     );
   }
 
-  const tag = `openweather:${lat}:${lon}`;
-
   const res = await fetch(
     `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${apiKey}&units=metric`,
     {
       next: {
         revalidate: REVALIDATE_SEC,
-        tags: ['openweather', tag],
       },
     },
   );
@@ -44,7 +41,7 @@ export async function GET(req: Request) {
 
   return NextResponse.json(data, {
     headers: {
-      'Cache-Control': `public, s-maxage=${REVALIDATE_SEC}`,
+      'Cache-Control': `public, max-age=0, s-maxage=${REVALIDATE_SEC}`,
     },
   });
 }
