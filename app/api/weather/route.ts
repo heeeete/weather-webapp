@@ -8,7 +8,6 @@ export async function GET(req: Request) {
   const lat = searchParams.get('lat')?.trim();
   const lon = searchParams.get('lon')?.trim();
   const apiKey = process.env.OPEN_WEATHER_KEY;
-  console.log(apiKey);
 
   if (!lat || !lon) {
     return NextResponse.json(
@@ -36,7 +35,6 @@ export async function GET(req: Request) {
   );
 
   if (!res.ok) {
-    console.log(res);
     return NextResponse.json(
       { error: `OpenWeather 요청 실패: ${res.status}` },
       { status: 502, headers: { 'Cache-Control': 'no-store' } },
