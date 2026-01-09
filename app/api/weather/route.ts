@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
 const REVALIDATE_SEC = 60 * 10; // 10분
-const STALE_SEC = 60 * 10; // 10분
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -45,7 +44,7 @@ export async function GET(req: Request) {
 
   return NextResponse.json(data, {
     headers: {
-      'Cache-Control': `public, s-maxage=${REVALIDATE_SEC}, stale-while-revalidate=${STALE_SEC}`,
+      'Cache-Control': `public, s-maxage=${REVALIDATE_SEC}`,
     },
   });
 }
