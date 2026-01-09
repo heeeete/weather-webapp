@@ -21,7 +21,7 @@ export default function CurrentWeatherCard({ lat, lon, current, today, isLoading
   const weatherDescription = current.weather[0]?.description || '';
 
   return (
-    <Card className="h-full border-none">
+    <Card className="h-full">
       <CardContent className="flex h-full flex-col justify-around">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* 위치 & 현재 기온 */}

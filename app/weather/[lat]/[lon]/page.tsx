@@ -1,0 +1,13 @@
+import WeatherDetailPage from '@/pages/weather-detail/ui/WeatherDetailPage';
+
+interface PageProps {
+  params: {
+    lat: string;
+    lon: string;
+  };
+}
+
+export default async function WeatherPage({ params }: PageProps) {
+  const { lat, lon } = await params;
+  return <WeatherDetailPage lat={lat} lon={lon} />;
+}
