@@ -1,14 +1,15 @@
-export async function getGeocode(district: string) {
-  const res = await fetch(`/api/geocode?district=${district}`);
+import { parseGeocode } from '../../lib/parse-geocode';
+
+import type { GeocodeResponse, LatLon } from './types';
+
+export async function getGeocode(district: string): Promise<LatLon | null> {
+  const qs = new URLSearchParams({ district });
+  const res = await fetch(`/api/geocode?${qs.toString()}`);
 
   if (!res.ok) {
-    throw new Error(`네이버 Geocode 실패: ${res.status}`);
+    throw new Error(`geocode request failed: ${res.status}`);
   }
 
-  const data = await res.json();
-
-  return {
-    lat: data.addresses[0].y,
-    lon: data.addresses[0].x,
-  };
+  const data = (await res.json()) as GeocodeResponse;
+  return parseGeocode(data);
 }
