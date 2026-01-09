@@ -1,9 +1,5 @@
-import HomePage from '@/pages/home/HomePage';
+import HomePage from '@/pages/home/ui/HomePage';
 
 export default function Home() {
-  return (
-    <div className="">
-      <HomePage />
-    </div>
-  );
+  return <HomePage />;
 }
