@@ -10,11 +10,11 @@ type Props = {
   lon?: number;
   current?: CurrentWeather;
   today?: DailyWeather;
-  isLoading?: boolean;
+  isPending?: boolean;
 };
 
-export default function CurrentWeatherCard({ lat, lon, current, today, isLoading }: Props) {
-  if (isLoading || !current || !today) {
+export default function CurrentWeatherCard({ lat, lon, current, today, isPending }: Props) {
+  if (isPending || !current || !today) {
     return null;
   }
 

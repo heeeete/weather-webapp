@@ -4,3 +4,7 @@ export { useReverseGeocodeQuery } from './model/useReverseGeocodeQuery';
 
 // API
 export { getGeocode } from './api/geocode/client';
+
+// Lib
+export { formatRegionName } from './lib/format-region-name';
+export { parseReverseGeocodeRegion } from './lib/parse-reverse-geocode';
