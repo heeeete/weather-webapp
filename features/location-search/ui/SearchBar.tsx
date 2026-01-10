@@ -39,7 +39,7 @@ export default function SearchBar({ limit = 50, onSelectDistrict }: Props) {
 
         {show && (
           <CommandList className="absolute top-full right-0 left-0 z-50 mt-2 max-h-80 overflow-auto rounded-xl border bg-background shadow-md">
-            <CommandEmpty>검색 결과가 없습니다.</CommandEmpty>
+            <CommandEmpty>해당 장소의 정보가 제공되지 않습니다.</CommandEmpty>
 
             <CommandGroup heading={`검색 결과 (${items.length}개)`}>
               {items.map((district) => (
