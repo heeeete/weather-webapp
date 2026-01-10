@@ -1,1 +1,1 @@
-export { default as BookmarkPage } from './ui/BookmarkPage';
+export { default } from './ui/BookmarkPage';
