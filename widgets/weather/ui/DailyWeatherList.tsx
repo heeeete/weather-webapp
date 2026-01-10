@@ -41,11 +41,12 @@ export default function DailyWeatherList({ dailyData }: Props) {
                 <span className="text-muted-foreground">
                   <TemperatureDisplay temp={day.temp.min} size="sm" />
                 </span>
+                {/* 일교차 바 그래프 */}
                 <div className="h-1 w-16 overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full bg-primary/60"
                     style={{
-                      width: `${Math.min(100, Math.max(20, ((day.temp.max - day.temp.min) / 20) * 100))}%`,
+                      width: `${Math.min(100, Math.max(0, ((day.temp.max - day.temp.min) / 15) * 100))}%`,
                     }}
                   />
                 </div>

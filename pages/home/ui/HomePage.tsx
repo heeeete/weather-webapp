@@ -4,6 +4,7 @@ import { useWeatherQuery } from '@/entities/weather';
 import { useCurrentLocation } from '@/features/location-detect/model/useCurrentLocation';
 import SearchBar from '@/features/location-search/ui/SearchBar';
 import { Spinner } from '@/shared/ui/spinner';
+import { PermissionDenied } from '@/widgets/location';
 import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
 
 export default function HomePage() {
@@ -11,9 +12,14 @@ export default function HomePage() {
 
   const { data: weatherData, isPending, error, isError } = useWeatherQuery(state.lat, state.lon);
 
+  if (state.status === 'denied') {
+    return <PermissionDenied />;
+  }
+
   if (!isPending && isError) {
     return <div>Error: {error?.message}</div>;
   }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-center">
