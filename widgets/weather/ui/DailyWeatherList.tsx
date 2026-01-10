@@ -37,7 +37,7 @@ export default function DailyWeatherList({ dailyData }: Props) {
                 />
               </div>
 
-              <div className="flex items-center gap-2 text-sm">
+              <div className="grid grid-cols-[2.5fr_4fr_2.5fr] items-center gap-2 text-sm">
                 <span className="text-muted-foreground">
                   <TemperatureDisplay temp={day.temp.min} size="sm" />
                 </span>
@@ -50,7 +50,7 @@ export default function DailyWeatherList({ dailyData }: Props) {
                     }}
                   />
                 </div>
-                <span className="font-medium">
+                <span className="text-right font-medium">
                   <TemperatureDisplay temp={day.temp.max} size="sm" />
                 </span>
               </div>
