@@ -2,7 +2,7 @@
 
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
 import { HourlyWeather } from '@/shared/api/open-weather/type';
-import { formatKstLabel } from '@/shared/lib/time/utils';
+import { formatUnixKstLabel } from '@/shared/lib/time/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area';
 
@@ -32,7 +32,7 @@ export default function HourlyWeatherList({ hourlyData, maxItems = 24 }: Props) 
                 className="flex min-w-[70px] shrink-0 flex-col items-center gap-1 rounded-lg bg-muted/50 p-3"
               >
                 <span className="text-xs text-muted-foreground">
-                  {index === 0 ? '지금' : formatKstLabel(hour.dt, 'A h시')}
+                  {index === 0 ? '지금' : formatUnixKstLabel(hour.dt, 'A h시')}
                 </span>
                 <WeatherIcon
                   icon={hour.weather[0]?.icon || '01d'}

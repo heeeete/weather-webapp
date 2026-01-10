@@ -2,7 +2,7 @@
 
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
 import { DailyWeather } from '@/shared/api/open-weather/type';
-import { formatKstLabel } from '@/shared/lib/time/utils';
+import { formatUnixKstLabel } from '@/shared/lib/time/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 
 type Props = {
@@ -28,7 +28,7 @@ export default function DailyWeatherList({ dailyData }: Props) {
             >
               <div className="flex items-center gap-3">
                 <span className="w-12 text-sm font-medium">
-                  {index === 0 ? '오늘' : formatKstLabel(day.dt, 'ddd')}
+                  {index === 0 ? '오늘' : formatUnixKstLabel(day.dt, 'ddd')}
                 </span>
                 <WeatherIcon
                   icon={day.weather[0]?.icon || '01d'}
