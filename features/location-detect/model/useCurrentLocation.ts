@@ -27,8 +27,8 @@ export function useCurrentLocation(options?: { auto?: boolean }) {
       (pos) => {
         setState({
           status: 'success',
-          lat: pos.coords.latitude,
-          lon: pos.coords.longitude,
+          lat: Number(pos.coords.latitude.toFixed(4)),
+          lon: Number(pos.coords.longitude.toFixed(4)),
         });
       },
       (err) => {

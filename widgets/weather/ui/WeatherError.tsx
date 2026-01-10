@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import SearchBar from '@/features/location-search/ui/SearchBar';
+import { SearchBar } from '@/features/location-search';
 import { Button } from '@/shared/ui/button';
 import { Info } from '@/shared/ui/info';
 

@@ -1,6 +1,6 @@
-import { Heart, Home } from 'lucide-react';
+import { Home, StarIcon } from 'lucide-react';
 
 export const navItems = [
   { href: '/', label: '홈', icon: Home },
-  { href: '/book-mark', label: '즐겨찾기', icon: Heart },
+  { href: '/bookmark', label: '즐겨찾기', icon: StarIcon },
 ] as const;

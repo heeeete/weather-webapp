@@ -1,4 +1,4 @@
-import SearchBar from '@/features/location-search/ui/SearchBar';
+import { SearchBar } from '@/features/location-search';
 import { Info } from '@/shared/ui/info';
 
 export function PermissionDenied() {

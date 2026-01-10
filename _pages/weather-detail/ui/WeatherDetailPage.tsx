@@ -1,28 +1,28 @@
 'use client';
 
-import { useReverseGeocodeQuery } from '@/entities/location';
+import { formatRegionName, useReverseGeocodeQuery } from '@/entities/location';
 import { useWeatherQuery } from '@/entities/weather';
-import { useCurrentLocation } from '@/features/location-detect/model/useCurrentLocation';
-import SearchBar from '@/features/location-search/ui/SearchBar';
+import { BookmarkToggle } from '@/features/bookmark';
+import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
-import { PermissionDenied } from '@/widgets/location';
-import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
+import {
+  CurrentWeatherCard,
+  DailyWeatherList,
+  HourlyWeatherList,
+  WeatherError,
+} from '@/widgets/weather';
 
-export default function HomePage() {
-  const { state } = useCurrentLocation({ auto: true });
+type Props = {
+  lon: number;
+  lat: number;
+};
 
-  const { data: weatherData, isPending, error, isError } = useWeatherQuery(state.lat, state.lon);
-  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(
-    state.lat,
-    state.lon,
-  );
+export default function WeatherDetailPage({ lon, lat }: Props) {
+  const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
+  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(lat, lon);
 
-  if (state.status === 'denied') {
-    return <PermissionDenied />;
-  }
-
-  if (!isPending && isError) {
-    return <div>Error: {error?.message}</div>;
+  if (isError) {
+    return <WeatherError error={error} />;
   }
 
   return (
@@ -35,7 +35,13 @@ export default function HomePage() {
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex min-w-0 flex-col gap-6">
-            <div className="flex-1">
+            <div className="relative flex-1">
+              {location && (
+                <div className="absolute top-4 right-4">
+                  <BookmarkToggle locationId={`${lat},${lon}`} name={formatRegionName(location)} />
+                </div>
+              )}
+
               <CurrentWeatherCard
                 current={weatherData?.current}
                 today={weatherData?.daily[0]}

@@ -2,26 +2,27 @@
 
 import { useReverseGeocodeQuery } from '@/entities/location';
 import { useWeatherQuery } from '@/entities/weather';
-import SearchBar from '@/features/location-search/ui/SearchBar';
+import { useCurrentLocation } from '@/features/location-detect';
+import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
-import {
-  CurrentWeatherCard,
-  DailyWeatherList,
-  HourlyWeatherList,
-  WeatherError,
-} from '@/widgets/weather';
+import { PermissionDenied } from '@/widgets/location';
+import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
 
-type Props = {
-  lon: number;
-  lat: number;
-};
+export default function HomePage() {
+  const { state } = useCurrentLocation({ auto: true });
 
-export default function WeatherDetailPage({ lon, lat }: Props) {
-  const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
-  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(lat, lon);
+  const { data: weatherData, isPending, error, isError } = useWeatherQuery(state.lat, state.lon);
+  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(
+    state.lat,
+    state.lon,
+  );
 
-  if (isError) {
-    return <WeatherError error={error} />;
+  if (state.status === 'denied') {
+    return <PermissionDenied />;
+  }
+
+  if (!isPending && isError) {
+    return <div>Error: {error?.message}</div>;
   }
 
   return (

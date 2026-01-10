@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import { Toaster } from '@/shared/ui/sonner';
 import { BottomNav, Header } from '@/widgets/layouts';
 
 import QueryProvider from './_providers/QueryProvider';
@@ -39,6 +40,7 @@ export default function RootLayout({
             <BottomNav />
           </div>
         </QueryProvider>
+        <Toaster />
       </body>
     </html>
   );
