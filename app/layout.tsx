@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import BottomNav from '@/widgets/layouts/BottomNav';
-import Header from '@/widgets/layouts/Header';
+import { BottomNav, Header } from '@/widgets/layouts';
 
 import QueryProvider from './_providers/QueryProvider';
 
