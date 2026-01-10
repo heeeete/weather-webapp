@@ -1,20 +1,18 @@
-'use client';
-
 import { LocationDisplay } from '@/entities/location';
+import { LocationRegionParts } from '@/entities/location/api/reverse-geocode/types';
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
 import { CurrentWeather, DailyWeather } from '@/shared/api/open-weather/type';
 import { Card, CardContent } from '@/shared/ui/card';
 
 type Props = {
-  lat?: number;
-  lon?: number;
   current?: CurrentWeather;
   today?: DailyWeather;
-  isPending?: boolean;
+  location?: LocationRegionParts | null;
+  isLocationPending?: boolean;
 };
 
-export default function CurrentWeatherCard({ lat, lon, current, today, isPending }: Props) {
-  if (isPending || !current || !today) {
+export default function CurrentWeatherCard({ current, today, location, isLocationPending }: Props) {
+  if (current == null || today == null) {
     return null;
   }
 
@@ -26,7 +24,7 @@ export default function CurrentWeatherCard({ lat, lon, current, today, isPending
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* 위치 & 현재 기온 */}
           <div className="flex flex-col gap-3">
-            <LocationDisplay lat={lat} lon={lon} />
+            <LocationDisplay location={location} isPending={isLocationPending} />
 
             <div className="flex items-baseline gap-2">
               <TemperatureDisplay temp={current.temp} size="xl" />

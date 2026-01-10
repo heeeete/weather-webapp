@@ -1,18 +1,23 @@
 import { MapPin } from 'lucide-react';
 
+import { Skeleton } from '@/shared/ui/skeleton';
+
+import { LocationRegionParts } from '../api/reverse-geocode/types';
 import { formatRegionName } from '../lib/format-region-name';
-import { useReverseGeocodeQuery } from '../model/useReverseGeocodeQuery';
 
 interface Props {
-  lat?: number;
-  lon?: number;
+  location?: LocationRegionParts | null;
+  isPending?: boolean;
 }
 
-export default function LocationDisplay({ lat, lon }: Props) {
-  const { data: location } = useReverseGeocodeQuery(lat, lon);
-
-  if (lat == null || lon == null) {
-    return;
+export default function LocationDisplay({ location, isPending }: Props) {
+  if (isPending) {
+    return (
+      <div className="flex items-center gap-1.5 text-muted-foreground">
+        <MapPin className="size-4" />
+        <Skeleton className="h-5 w-50" />
+      </div>
+    );
   }
 
   return (

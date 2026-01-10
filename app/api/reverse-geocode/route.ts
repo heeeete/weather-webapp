@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const REVALIDATE_SEC = 60 * 60 * 24; // 1일
-const STALE_SEC = 60 * 60 * 24; // 1일
+const STALE_SEC = 60 * 60 * 24 * 7; // 7일
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -41,7 +41,6 @@ export async function GET(req: Request) {
     },
     next: {
       revalidate: REVALIDATE_SEC,
-      tags: ['reverse-geocode', `${lon},${lat}`],
     },
   });
 
