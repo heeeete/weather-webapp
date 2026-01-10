@@ -3,7 +3,12 @@
 import { useWeatherQuery } from '@/entities/weather';
 import SearchBar from '@/features/location-search/ui/SearchBar';
 import { Spinner } from '@/shared/ui/spinner';
-import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
+import {
+  CurrentWeatherCard,
+  DailyWeatherList,
+  HourlyWeatherList,
+  WeatherError,
+} from '@/widgets/weather';
 
 type Props = {
   lon: number;
@@ -11,7 +16,11 @@ type Props = {
 };
 
 export default function WeatherDetailPage({ lon, lat }: Props) {
-  const { data: weatherData, isPending } = useWeatherQuery(lat, lon);
+  const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
+
+  if (isError) {
+    return <WeatherError error={error} />;
+  }
 
   return (
     <div className="flex flex-col gap-6">

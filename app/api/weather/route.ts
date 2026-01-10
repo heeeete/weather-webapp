@@ -31,9 +31,11 @@ export async function GET(req: Request) {
   );
 
   if (!res.ok) {
+    const text = await res.json();
+
     return NextResponse.json(
-      { error: `OpenWeather 요청 실패: ${res.status}` },
-      { status: 502, headers: { 'Cache-Control': 'no-store' } },
+      { error: text.message || 'OpenWeather 요청 실패' },
+      { status: res.status, headers: { 'Cache-Control': 'no-store' } },
     );
   }
 
