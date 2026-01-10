@@ -1,5 +1,6 @@
 'use client';
 
+import { useReverseGeocodeQuery } from '@/entities/location';
 import { useWeatherQuery } from '@/entities/weather';
 import { useCurrentLocation } from '@/features/location-detect/model/useCurrentLocation';
 import SearchBar from '@/features/location-search/ui/SearchBar';
@@ -11,6 +12,10 @@ export default function HomePage() {
   const { state } = useCurrentLocation({ auto: true });
 
   const { data: weatherData, isPending, error, isError } = useWeatherQuery(state.lat, state.lon);
+  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(
+    state.lat,
+    state.lon,
+  );
 
   if (state.status === 'denied') {
     return <PermissionDenied />;
@@ -32,11 +37,10 @@ export default function HomePage() {
           <div className="flex min-w-0 flex-col gap-6">
             <div className="flex-1">
               <CurrentWeatherCard
-                lat={state.lat}
-                lon={state.lon}
                 current={weatherData?.current}
                 today={weatherData?.daily[0]}
-                isPending={isPending}
+                location={location}
+                isLocationPending={isLocationPending}
               />
             </div>
             <HourlyWeatherList hourlyData={weatherData?.hourly} />
