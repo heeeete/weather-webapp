@@ -24,7 +24,7 @@ export default function HourlyWeatherList({ hourlyData, maxItems = 24 }: Props) 
         <CardTitle className="text-base font-semibold">시간대별 날씨</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea type="hover">
+        <ScrollArea type="always" className="pb-2">
           <div className="flex gap-2">
             {items.map((hour, index) => (
               <div
