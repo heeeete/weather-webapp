@@ -9,8 +9,11 @@ import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widge
 export default function HomePage() {
   const { state } = useCurrentLocation({ auto: true });
 
-  const { data: weatherData, isPending } = useWeatherQuery(state.lat, state.lon);
+  const { data: weatherData, isPending, error, isError } = useWeatherQuery(state.lat, state.lon);
 
+  if (!isPending && isError) {
+    return <div>Error: {error?.message}</div>;
+  }
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-center">
