@@ -1,6 +1,7 @@
 import { LocationDisplay } from '@/entities/location';
 import { LocationRegionParts } from '@/entities/location/api/reverse-geocode/types';
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
+import BookmarkButton from '@/features/bookmark/ui/BookmarkButton';
 import { CurrentWeather, DailyWeather } from '@/shared/api/open-weather/type';
 import { Card, CardContent } from '@/shared/ui/card';
 
@@ -19,8 +20,11 @@ export default function CurrentWeatherCard({ current, today, location, isLocatio
   const weatherDescription = current.weather[0]?.description || '';
 
   return (
-    <Card className="h-full">
+    <Card className="relative h-full">
       <CardContent className="flex h-full flex-col justify-around">
+        <div className="absolute top-4 right-4">
+          <BookmarkButton />
+        </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* 위치 & 현재 기온 */}
           <div className="flex flex-col gap-3">
