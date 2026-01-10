@@ -7,7 +7,7 @@ import { useWeatherQuery, WeatherSummary } from '@/entities/weather';
 import { BookmarkToggle, EditBookmarkTrigger } from '@/features/bookmark';
 import { Card, CardContent } from '@/shared/ui/card';
 
-export default function FavoritesPlaceItem({
+export default function BookmarkItem({
   id,
   name,
   onEdit,

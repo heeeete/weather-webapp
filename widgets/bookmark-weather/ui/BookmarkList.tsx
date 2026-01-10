@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { selectBookmarksRecord, useBookmarkStore } from '@/entities/location';
 import { EditBookmarkDialog } from '@/features/bookmark';
 
-import FavoritesPlaceItem from './FavoritesPlaceItem';
+import BookmarkItem from './BookmarkItem';
 
-export default function FavoritesPlacesList() {
+export default function BookmarkList() {
   const bookmarksRecord = useBookmarkStore(selectBookmarksRecord);
 
   const bookmarks = Object.entries(bookmarksRecord).map(([id, name]) => ({ id, name }));
@@ -17,12 +17,7 @@ export default function FavoritesPlacesList() {
     <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
       {bookmarks.map(({ id, name }) => {
         return (
-          <FavoritesPlaceItem
-            key={id}
-            id={id}
-            name={name}
-            onEdit={() => setEditing({ id, name })}
-          />
+          <BookmarkItem key={id} id={id} name={name} onEdit={() => setEditing({ id, name })} />
         );
       })}
       <EditBookmarkDialog

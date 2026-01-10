@@ -14,13 +14,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
-        {/* 로고 */}
         <Link href="/" className="flex items-center gap-2">
           <Cloud className="size-6 text-primary" />
           <span className="text-lg font-bold">날씨</span>
         </Link>
 
-        {/* 데스크톱 네비게이션 */}
         <nav className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
