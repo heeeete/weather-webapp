@@ -1,3 +1,5 @@
+'use client';
+
 import { StarIcon } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';

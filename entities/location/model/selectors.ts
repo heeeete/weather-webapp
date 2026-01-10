@@ -6,3 +6,6 @@ export const selectBookmarkIds = (state: { bookmarks: Record<string, string> }) 
 
 export const selectBookmarksRecord = (state: { bookmarks: Record<string, string> }) =>
   state.bookmarks;
+
+export const selectBookmarkCount = (state: { bookmarks: Record<string, string> }) =>
+  Object.keys(state.bookmarks).length;

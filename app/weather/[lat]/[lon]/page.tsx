@@ -1,10 +1,10 @@
 import WeatherDetailPage from '@/pages/weather-detail/ui/WeatherDetailPage';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     lat: string;
     lon: string;
-  };
+  }>;
 }
 
 export default async function WeatherPage({ params }: PageProps) {

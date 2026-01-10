@@ -1,4 +1,5 @@
 // entities/bookmark/model/store.ts
+import { toast } from 'sonner';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -32,6 +33,12 @@ export const useBookmarkStore = create<BookmarkState>()(
 
       toggle: (id, name) => {
         const { bookmarks, add, remove } = get();
+        const bookmarkCount = Object.keys(bookmarks).length;
+
+        if (bookmarkCount >= 6) {
+          return toast.error('즐겨찾기는 최대 6개까지 등록할 수 있습니다.');
+        }
+
         if (bookmarks[id]) remove(id);
         else add(id, name);
       },
