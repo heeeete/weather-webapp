@@ -1,2 +1,2 @@
 // UI
-export { default as FavoritesPlacesList } from './ui/FavoritesPlacesList';
+export { default as BookmarkList } from './ui/BookmarkList';

@@ -14,12 +14,12 @@ export default function BookmarkToggle({ locationId, name }: { locationId: strin
     <Button
       variant={'ghost'}
       size={'icon'}
-      onClick={(e) => {
-        e.preventDefault();
+      onClick={() => {
         toggleBookmark(locationId, name);
       }}
     >
       <StarIcon className={cn(isBookmarked && 'fill-yellow-500 text-yellow-500')} />
+      <span className="sr-only">{isBookmarked ? '즐겨찾기에서 제거' : '즐겨찾기에 추가'}</span>
     </Button>
   );
 }
