@@ -9,5 +9,5 @@ interface PageProps {
 
 export default async function WeatherPage({ params }: PageProps) {
   const { lat, lon } = await params;
-  return <WeatherDetailPage lat={lat} lon={lon} />;
+  return <WeatherDetailPage lat={Number(lat)} lon={Number(lon)} />;
 }

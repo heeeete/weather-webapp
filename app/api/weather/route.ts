@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
 
 const REVALIDATE_SEC = 60 * 10; // 10분
-const STALE_SEC = 60 * 10; // 10분
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const lat = searchParams.get('lat')?.trim();
   const lon = searchParams.get('lon')?.trim();
   const apiKey = process.env.OPEN_WEATHER_KEY;
-  console.log(apiKey);
 
   if (!lat || !lon) {
     return NextResponse.json(
@@ -23,20 +21,16 @@ export async function GET(req: Request) {
     );
   }
 
-  const tag = `openweather:${lat}:${lon}`;
-
   const res = await fetch(
     `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${apiKey}&units=metric`,
     {
       next: {
         revalidate: REVALIDATE_SEC,
-        tags: ['openweather', tag],
       },
     },
   );
 
   if (!res.ok) {
-    console.log(res);
     return NextResponse.json(
       { error: `OpenWeather 요청 실패: ${res.status}` },
       { status: 502, headers: { 'Cache-Control': 'no-store' } },
@@ -47,7 +41,7 @@ export async function GET(req: Request) {
 
   return NextResponse.json(data, {
     headers: {
-      'Cache-Control': `public, s-maxage=${REVALIDATE_SEC}, stale-while-revalidate=${STALE_SEC}`,
+      'Cache-Control': `public, max-age=0, s-maxage=${REVALIDATE_SEC}`,
     },
   });
 }

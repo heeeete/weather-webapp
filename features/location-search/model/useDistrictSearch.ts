@@ -34,7 +34,12 @@ export function useDistrictSearch(options: Options) {
     setOpen(false);
     try {
       const data = await getGeocode(district);
-      router.push(`/weather/${data.lon}/${data.lat}`);
+
+      if (data) {
+        router.push(`/weather/${data.lat}/${data.lon}`);
+      } else {
+        alert('주소를 찾을 수 없습니다.');
+      }
     } catch (error) {
       console.error('selectDistrict', error);
     }
