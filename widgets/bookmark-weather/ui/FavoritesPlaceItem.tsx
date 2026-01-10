@@ -4,10 +4,18 @@ import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 
 import { useWeatherQuery, WeatherSummary } from '@/entities/weather';
-import { BookmarkToggle } from '@/features/bookmark';
+import { BookmarkToggle, EditBookmarkTrigger } from '@/features/bookmark';
 import { Card, CardContent } from '@/shared/ui/card';
 
-export default function FavoritesPlaceItem({ id, name }: { id: string; name: string }) {
+export default function FavoritesPlaceItem({
+  id,
+  name,
+  onEdit,
+}: {
+  id: string;
+  name: string;
+  onEdit: () => void;
+}) {
   const [lat, lon] = id.split(',');
   const { data: weatherData, isPending } = useWeatherQuery(Number(lat), Number(lon));
 
@@ -29,7 +37,15 @@ export default function FavoritesPlaceItem({ id, name }: { id: string; name: str
             />
           </div>
 
-          <BookmarkToggle locationId={id} name={name} />
+          <div
+            className="flex items-center gap-2"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <BookmarkToggle locationId={id} name={name} />
+            <EditBookmarkTrigger onClick={onEdit} />
+          </div>
         </CardContent>
       </Card>
     </Link>
