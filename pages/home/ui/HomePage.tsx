@@ -2,8 +2,8 @@
 
 import { useReverseGeocodeQuery } from '@/entities/location';
 import { useWeatherQuery } from '@/entities/weather';
-import { useCurrentLocation } from '@/features/location-detect/model/useCurrentLocation';
-import SearchBar from '@/features/location-search/ui/SearchBar';
+import { useCurrentLocation } from '@/features/location-detect';
+import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
 import { PermissionDenied } from '@/widgets/location';
 import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
@@ -41,6 +41,7 @@ export default function HomePage() {
                 today={weatherData?.daily[0]}
                 location={location}
                 isLocationPending={isLocationPending}
+                locationState={{ lat: state.lat ?? 0, lon: state.lon ?? 0 }}
               />
             </div>
             <HourlyWeatherList hourlyData={weatherData?.hourly} />

@@ -1,2 +1,2 @@
 // UI
-export { default as BookmarkButton } from './ui/BookmarkButton';
+export { default as BookmarkToggle } from './ui/BookmarkToggle';

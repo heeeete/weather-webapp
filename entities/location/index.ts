@@ -9,3 +9,7 @@ export { getGeocode } from './api/geocode/client';
 export { formatRegionName } from './lib/format-region-name';
 export { parseReverseGeocodeRegion } from './lib/parse-reverse-geocode';
 export { parseGeocode } from './lib/parse-geocode';
+
+// Model
+export { useBookmarkStore } from './model/store';
+export { selectIsBookmarked, selectBookmarkIds } from './model/selectors';

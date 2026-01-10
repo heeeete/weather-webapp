@@ -2,7 +2,7 @@
 
 import { useReverseGeocodeQuery } from '@/entities/location';
 import { useWeatherQuery } from '@/entities/weather';
-import SearchBar from '@/features/location-search/ui/SearchBar';
+import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
 import {
   CurrentWeatherCard,
@@ -40,6 +40,7 @@ export default function WeatherDetailPage({ lon, lat }: Props) {
                 today={weatherData?.daily[0]}
                 location={location}
                 isLocationPending={isLocationPending}
+                locationState={{ lat, lon }}
               />
             </div>
             <HourlyWeatherList hourlyData={weatherData?.hourly} />
