@@ -1,15 +1,12 @@
 'use client';
 
-import { Cloud, Heart, Home } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Button } from '@/shared/ui/button';
 
-const navItems = [
-  { href: '/', label: '홈', icon: Home },
-  { href: '/favorites', label: '즐겨찾기', icon: Heart },
-];
+import { navItems } from '../model/navItems';
 
 export default function Header() {
   const pathname = usePathname();

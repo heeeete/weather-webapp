@@ -1,15 +1,11 @@
 'use client';
 
-import { Heart, Home } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/shared/lib/utils';
 
-const navItems = [
-  { href: '/', label: '홈', icon: Home },
-  { href: '/favorites', label: '즐겨찾기', icon: Heart },
-];
+import { navItems } from '../model/navItems';
 
 export default function BottomNav() {
   const pathname = usePathname();
