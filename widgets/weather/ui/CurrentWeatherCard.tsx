@@ -1,7 +1,6 @@
 import { LocationDisplay } from '@/entities/location';
 import { LocationRegionParts } from '@/entities/location/api/reverse-geocode/types';
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
-import { BookmarkToggle } from '@/features/bookmark';
 import { CurrentWeather, DailyWeather } from '@/shared/api/open-weather/type';
 import { Card, CardContent } from '@/shared/ui/card';
 
@@ -10,19 +9,9 @@ type Props = {
   today?: DailyWeather;
   location?: LocationRegionParts | null;
   isLocationPending?: boolean;
-  locationState: {
-    lat: number;
-    lon: number;
-  };
 };
 
-export default function CurrentWeatherCard({
-  current,
-  today,
-  location,
-  isLocationPending,
-  locationState,
-}: Props) {
+export default function CurrentWeatherCard({ current, today, location, isLocationPending }: Props) {
   if (current == null || today == null) {
     return null;
   }
@@ -30,11 +19,8 @@ export default function CurrentWeatherCard({
   const weatherDescription = current.weather[0]?.description || '';
 
   return (
-    <Card className="relative h-full">
+    <Card className="h-full">
       <CardContent className="flex h-full flex-col justify-around">
-        <div className="absolute top-4 right-4">
-          <BookmarkToggle locationId={`${locationState?.lat},${locationState?.lon}`} />
-        </div>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* 위치 & 현재 기온 */}
           <div className="flex flex-col gap-3">

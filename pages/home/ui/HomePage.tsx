@@ -41,7 +41,6 @@ export default function HomePage() {
                 today={weatherData?.daily[0]}
                 location={location}
                 isLocationPending={isLocationPending}
-                locationState={{ lat: state.lat ?? 0, lon: state.lon ?? 0 }}
               />
             </div>
             <HourlyWeatherList hourlyData={weatherData?.hourly} />
