@@ -5,38 +5,38 @@ import { persist } from 'zustand/middleware';
 type LocationId = string;
 
 interface BookmarkState {
-  ids: Record<LocationId, true>;
+  bookmarks: Record<LocationId, string>;
 
-  add: (id: LocationId) => void;
+  add: (id: LocationId, name: string) => void;
   remove: (id: LocationId) => void;
-  toggle: (id: LocationId) => void;
+  toggle: (id: LocationId, name: string) => void;
   clear: () => void;
 }
 
 export const useBookmarkStore = create<BookmarkState>()(
   persist(
     (set, get) => ({
-      ids: {},
+      bookmarks: {},
 
-      add: (id) =>
+      add: (id, name) =>
         set((state) => ({
-          ids: { ...state.ids, [id]: true },
+          bookmarks: { ...state.bookmarks, [id]: name },
         })),
 
       remove: (id) =>
         set((state) => {
-          const next = { ...state.ids };
+          const next = { ...state.bookmarks };
           delete next[id];
-          return { ids: next };
+          return { bookmarks: next };
         }),
 
-      toggle: (id) => {
-        const { ids, add, remove } = get();
-        if (ids[id]) remove(id);
-        else add(id);
+      toggle: (id, name) => {
+        const { bookmarks, add, remove } = get();
+        if (bookmarks[id]) remove(id);
+        else add(id, name);
       },
 
-      clear: () => set({ ids: {} }),
+      clear: () => set({ bookmarks: {} }),
     }),
     {
       name: 'bookmark',

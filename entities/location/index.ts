@@ -12,4 +12,4 @@ export { parseGeocode } from './lib/parse-geocode';
 
 // Model
 export { useBookmarkStore } from './model/store';
-export { selectIsBookmarked, selectBookmarkIds } from './model/selectors';
+export { selectIsBookmarked, selectBookmarkIds, selectBookmarksRecord } from './model/selectors';

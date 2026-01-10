@@ -1,6 +1,6 @@
 'use client';
 
-import { useReverseGeocodeQuery } from '@/entities/location';
+import { formatRegionName, useReverseGeocodeQuery } from '@/entities/location';
 import { useWeatherQuery } from '@/entities/weather';
 import { BookmarkToggle } from '@/features/bookmark';
 import { SearchBar } from '@/features/location-search';
@@ -36,9 +36,11 @@ export default function WeatherDetailPage({ lon, lat }: Props) {
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex min-w-0 flex-col gap-6">
             <div className="relative flex-1">
-              <div className="absolute top-4 right-4">
-                <BookmarkToggle locationId={`${lat},${lon}`} />
-              </div>
+              {location && (
+                <div className="absolute top-4 right-4">
+                  <BookmarkToggle locationId={`${lat},${lon}`} name={formatRegionName(location)} />
+                </div>
+              )}
 
               <CurrentWeatherCard
                 current={weatherData?.current}
