@@ -1,4 +1,4 @@
-import BookmarkPage from '@/pages/bookmark/ui/BookmarkPage';
+import BookmarkPage from '@/_pages/bookmark/ui/BookmarkPage';
 
 export default function Bookmark() {
   return <BookmarkPage />;

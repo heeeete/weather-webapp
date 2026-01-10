@@ -1,4 +1,4 @@
-import WeatherDetailPage from '@/pages/weather-detail/ui/WeatherDetailPage';
+import WeatherDetailPage from '@/_pages/weather-detail/ui/WeatherDetailPage';
 
 interface PageProps {
   params: Promise<{
