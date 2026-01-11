@@ -5,7 +5,7 @@ import { Button } from '@/shared/ui/button';
 export default function EditBookmarkTrigger({ onClick }: { onClick: () => void }) {
   return (
     <Button variant="ghost" size="icon" onClick={onClick}>
-      <PencilIcon className="h-4 w-4" />
+      <PencilIcon className="h-4 w-4" aria-hidden="true" />
       <span className="sr-only">즐겨찾기 이름 수정</span>
     </Button>
   );
