@@ -7,6 +7,13 @@ import { fetchWeather } from '@/entities/weather/api/server';
 // 10분마다 재생성 (ISR)
 export const revalidate = 600;
 
+// generateStaticParams가 있어야 정적 렌더링 + ISR이 작동함
+// 빈 배열 = 빌드 시 미리 생성하지 않음, dynamicParams = true면 요청 시 생성 후 캐시
+export async function generateStaticParams() {
+  return [];
+}
+
+export const dynamicParams = true;
 interface PageProps {
   params: Promise<{
     lat: string;
