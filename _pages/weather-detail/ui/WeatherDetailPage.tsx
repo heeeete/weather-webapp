@@ -5,12 +5,7 @@ import { useWeatherQuery } from '@/entities/weather';
 import { BookmarkToggle } from '@/features/bookmark';
 import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
-import {
-  CurrentWeatherCard,
-  DailyWeatherList,
-  HourlyWeatherList,
-  WeatherError,
-} from '@/widgets/weather';
+import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
 
 type Props = {
   lon: number;
@@ -21,8 +16,8 @@ export default function WeatherDetailPage({ lon, lat }: Props) {
   const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
   const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(lat, lon);
 
-  if (isError) {
-    return <WeatherError error={error} />;
+  if (!isPending && isError) {
+    throw error;
   }
 
   return (

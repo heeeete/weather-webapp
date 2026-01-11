@@ -23,7 +23,7 @@ export default function HomePage() {
   }
 
   if (!isPending && isError) {
-    return <div>Error: {error?.message}</div>;
+    throw error;
   }
 
   return (

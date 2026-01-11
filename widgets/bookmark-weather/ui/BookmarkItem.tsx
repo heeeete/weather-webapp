@@ -19,7 +19,7 @@ export default function BookmarkItem({
   onEdit: () => void;
 }) {
   const [lat, lon] = id.split(',');
-  const { data: weatherData, isPending } = useWeatherQuery(Number(lat), Number(lon));
+  const { data: weatherData, isPending, isError } = useWeatherQuery(Number(lat), Number(lon));
 
   return (
     <Link href={`/weather/${lat}/${lon}`}>
@@ -35,7 +35,7 @@ export default function BookmarkItem({
               {name}
               <span className="sr-only">상세 날씨로 이동</span>
             </h3>
-            <WeatherSummary weatherData={weatherData} isPending={isPending} />
+            <WeatherSummary weatherData={weatherData} isPending={isPending} isError={isError} />
           </div>
 
           <div
@@ -56,46 +56,50 @@ export default function BookmarkItem({
 function WeatherSummary({
   weatherData,
   isPending,
+  isError,
 }: {
   weatherData: WeatherApiResponse | undefined;
   isPending: boolean;
+  isError: boolean;
 }) {
-  const current = weatherData?.current.temp;
-  const max = weatherData?.daily[0].temp.max;
-  const min = weatherData?.daily[0].temp.min;
+  const current = weatherData?.current?.temp;
+  const max = weatherData?.daily?.[0]?.temp?.max;
+  const min = weatherData?.daily?.[0]?.temp?.min;
 
   const labelOrLoading = (title: string, value: number | undefined) => {
     if (isPending) return `${title} 불러오는 중`;
+    if (isError) return `${title} 불러오기 실패`;
     if (value == null) return `${title} 정보 없음`;
     return `${title} ${Math.round(value)}도`;
   };
 
+  const rows: Array<{ key: string; title: string; value: number | undefined }> = [
+    { key: 'current', title: '현재 기온', value: current },
+    { key: 'max', title: '최고 기온', value: max },
+    { key: 'min', title: '최저 기온', value: min },
+  ];
+
   return (
     <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-      <div className="flex items-center gap-2" aria-label={labelOrLoading('현재 기온', current)}>
-        <span aria-hidden="true">현재 기온</span>
-        {isPending ? (
-          <Skeleton className="h-7 w-16" />
-        ) : (
-          <TemperatureDisplay temp={current || 0} size="md" aria-hidden="true" />
-        )}
-      </div>
-      <div className="flex items-center gap-2" aria-label={labelOrLoading('최고 기온', max)}>
-        <span aria-hidden="true">최고 기온</span>
-        {isPending ? (
-          <Skeleton className="h-7 w-16" />
-        ) : (
-          <TemperatureDisplay temp={max || 0} size="md" aria-hidden="true" />
-        )}
-      </div>
-      <div className="flex items-center gap-2" aria-label={labelOrLoading('최저 기온', min)}>
-        <span aria-hidden="true">최저 기온</span>
-        {isPending ? (
-          <Skeleton className="h-7 w-16" />
-        ) : (
-          <TemperatureDisplay temp={min || 0} size="md" aria-hidden="true" />
-        )}
-      </div>
+      {rows.map(({ key, title, value }) => (
+        <div
+          key={key}
+          className="flex items-center gap-2"
+          aria-label={labelOrLoading(title, value)}
+        >
+          <span aria-hidden="true">{title}</span>
+
+          <span className="h-7" aria-hidden="true">
+            {isPending ? (
+              <Skeleton className="h-full w-16" />
+            ) : isError ? (
+              <span>-</span>
+            ) : (
+              <TemperatureDisplay temp={value ?? 0} size="md" />
+            )}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
