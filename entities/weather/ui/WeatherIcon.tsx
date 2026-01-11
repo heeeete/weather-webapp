@@ -6,6 +6,7 @@ type Props = {
   icon: string;
   description?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  ariaHidden?: boolean;
 };
 
 const sizeMap = {
@@ -15,7 +16,7 @@ const sizeMap = {
   xl: 100,
 };
 
-export function WeatherIcon({ icon, description = '', size = 'md' }: Props) {
+export function WeatherIcon({ icon, description = '', size = 'md', ariaHidden = false }: Props) {
   const dimension = sizeMap[size];
 
   return (
@@ -25,6 +26,7 @@ export function WeatherIcon({ icon, description = '', size = 'md' }: Props) {
       width={dimension}
       height={dimension}
       className="drop-shadow-sm"
+      aria-hidden={ariaHidden}
     />
   );
 }

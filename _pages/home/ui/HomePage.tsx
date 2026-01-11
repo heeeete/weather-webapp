@@ -31,7 +31,10 @@ export default function HomePage() {
         <SearchBar />
       </div>
       {isPending ? (
-        <Spinner className="mx-auto size-20" />
+        <div role="status" aria-live="polite">
+          <Spinner className="mx-auto size-20" />
+          <span className="sr-only">날씨 정보를 불러오는 중입니다.</span>
+        </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex min-w-0 flex-col gap-6">
