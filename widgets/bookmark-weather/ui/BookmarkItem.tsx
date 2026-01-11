@@ -3,9 +3,11 @@
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 
-import { useWeatherQuery, WeatherSummary } from '@/entities/weather';
+import { TemperatureDisplay, useWeatherQuery } from '@/entities/weather';
 import { BookmarkToggle, EditBookmarkTrigger } from '@/features/bookmark';
+import { WeatherApiResponse } from '@/shared/api/open-weather/type';
 import { Card, CardContent } from '@/shared/ui/card';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 export default function BookmarkItem({
   id,
@@ -29,12 +31,7 @@ export default function BookmarkItem({
 
           <div className="flex flex-1 flex-col gap-4">
             <h3 className="text-lg font-medium max-sm:text-base">{name}</h3>
-            <WeatherSummary
-              current={weatherData?.current.temp}
-              max={weatherData?.daily[0].temp.max}
-              min={weatherData?.daily[0].temp.min}
-              isLoading={isPending}
-            />
+            <WeatherSummary weatherData={weatherData} isPending={isPending} />
           </div>
 
           <div
@@ -49,5 +46,46 @@ export default function BookmarkItem({
         </CardContent>
       </Card>
     </Link>
+  );
+}
+
+function WeatherSummary({
+  weatherData,
+  isPending,
+}: {
+  weatherData: WeatherApiResponse | undefined;
+  isPending: boolean;
+}) {
+  const current = weatherData?.current.temp;
+  const max = weatherData?.daily[0].temp.max;
+  const min = weatherData?.daily[0].temp.min;
+
+  return (
+    <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2">
+        <span>현재 기온</span>
+        {isPending ? (
+          <Skeleton className="h-7 w-16" />
+        ) : (
+          <TemperatureDisplay temp={current || 0} size="md" />
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        <span>최고 기온</span>
+        {isPending ? (
+          <Skeleton className="h-7 w-16" />
+        ) : (
+          <TemperatureDisplay temp={max || 0} size="md" />
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        <span>최저 기온</span>
+        {isPending ? (
+          <Skeleton className="h-7 w-16" />
+        ) : (
+          <TemperatureDisplay temp={min || 0} size="md" />
+        )}
+      </div>
+    </div>
   );
 }

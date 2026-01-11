@@ -9,7 +9,6 @@ import BookmarkItem from './BookmarkItem';
 
 export default function BookmarkList() {
   const bookmarksRecord = useBookmarkStore(selectBookmarksRecord);
-
   const bookmarks = Object.entries(bookmarksRecord).map(([id, name]) => ({ id, name }));
   const [editing, setEditing] = useState<{ id: string; name: string } | null>(null);
 
