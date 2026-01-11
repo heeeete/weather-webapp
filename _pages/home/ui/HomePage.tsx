@@ -5,8 +5,9 @@ import { useWeatherQuery } from '@/entities/weather';
 import { useCurrentLocation } from '@/features/location-detect';
 import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
-import { PermissionDenied } from '@/widgets/location';
 import { CurrentWeatherCard, DailyWeatherList, HourlyWeatherList } from '@/widgets/weather';
+
+import { PermissionDenied } from './PermissionDenied';
 
 export default function HomePage() {
   const { state } = useCurrentLocation({ auto: true });
