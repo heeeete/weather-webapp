@@ -18,9 +18,10 @@ export async function GET(req: Request) {
   const clientSecret = process.env.NAVER_CLIENT_SECRET;
 
   if (!clientId || !clientSecret) {
+    console.error('[GET /api/geocode] NAVER API 키가 설정되지 않음');
     return NextResponse.json(
-      { error: 'NAVER_CLIENT_ID와 NAVER_CLIENT_SECRET는 필수입니다.' },
-      { status: 400, headers: { 'Cache-Control': 'no-store' } },
+      { error: '서버 설정 오류가 발생했습니다.' },
+      { status: 500, headers: { 'Cache-Control': 'no-store' } },
     );
   }
 
@@ -30,30 +31,40 @@ export async function GET(req: Request) {
 
   const url = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?${params}`;
 
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'X-NCP-APIGW-API-KEY-ID': clientId,
-      'X-NCP-APIGW-API-KEY': clientSecret,
-    },
-    next: {
-      revalidate: REVALIDATE_SEC,
-      tags: ['geocode', district],
-    },
-  });
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': clientId,
+        'X-NCP-APIGW-API-KEY': clientSecret,
+      },
+      next: {
+        revalidate: REVALIDATE_SEC,
+        tags: ['geocode', district],
+      },
+    });
 
-  if (!res.ok) {
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`[GET /api/geocode] Naver API 실패: ${res.status}`, text);
+      return NextResponse.json(
+        { error: `위치 검색에 실패했습니다. (${res.status})` },
+        { status: 502, headers: { 'Cache-Control': 'no-store' } },
+      );
+    }
+
+    const data = await res.json();
+
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': `public, s-maxage=${REVALIDATE_SEC}, stale-while-revalidate=${STALE_SEC}`,
+      },
+    });
+  } catch (error) {
+    console.error('[GET /api/geocode]', error);
     return NextResponse.json(
-      { error: `네이버 Geocode 실패: ${res.status}` },
-      { status: 502, headers: { 'Cache-Control': 'no-store' } },
+      { error: '위치 검색 중 오류가 발생했습니다.' },
+      { status: 500, headers: { 'Cache-Control': 'no-store' } },
     );
   }
-
-  const data = await res.json();
-
-  return NextResponse.json(data, {
-    headers: {
-      'Cache-Control': `public, s-maxage=${REVALIDATE_SEC}, stale-while-revalidate=${STALE_SEC}`,
-    },
-  });
 }

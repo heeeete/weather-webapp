@@ -1,7 +1,7 @@
 'use client';
 
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
-import { DailyWeather } from '@/shared/api/open-weather/type';
+import { DailyWeather } from '@/entities/weather/api/type';
 import { formatUnixKstLabel } from '@/shared/lib/time/utils';
 import { Card, CardContent, CardHeader } from '@/shared/ui/card';
 

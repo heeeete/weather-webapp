@@ -23,7 +23,7 @@ export default function LocationDisplay({ location, isPending }: Props) {
   return (
     <div className="flex items-center gap-1.5 text-muted-foreground">
       <MapPin className="size-4" />
-      <span className="text-sm font-medium">{location && formatRegionName(location)}</span>
+      <span className="text-sm font-medium">{location ? formatRegionName(location) : ''}</span>
     </div>
   );
 }

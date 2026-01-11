@@ -1,13 +1,13 @@
 import { LocationDisplay } from '@/entities/location';
 import { LocationRegionParts } from '@/entities/location/api/reverse-geocode/types';
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
-import { CurrentWeather, DailyWeather } from '@/shared/api/open-weather/type';
+import { CurrentWeather, DailyWeather } from '@/entities/weather/api/type';
 import { Card, CardContent } from '@/shared/ui/card';
 
 type Props = {
-  current?: CurrentWeather;
-  today?: DailyWeather;
-  location?: LocationRegionParts | null;
+  current: CurrentWeather;
+  today: DailyWeather;
+  location: LocationRegionParts | null;
   isLocationPending?: boolean;
 };
 

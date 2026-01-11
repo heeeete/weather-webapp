@@ -1,7 +1,7 @@
 'use client';
 
 import { TemperatureDisplay, WeatherIcon } from '@/entities/weather';
-import { HourlyWeather } from '@/shared/api/open-weather/type';
+import { HourlyWeather } from '@/entities/weather/api/type';
 import { formatUnixKstLabel } from '@/shared/lib/time/utils';
 import { Card, CardContent, CardHeader } from '@/shared/ui/card';
 import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area';
