@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import WeatherDetailPage from '@/_pages/weather-detail';
 
 interface PageProps {
@@ -5,6 +7,10 @@ interface PageProps {
     lat: string;
     lon: string;
   }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lat, lon } = await params;
 }
 
 export default async function WeatherPage({ params }: PageProps) {
