@@ -6,6 +6,9 @@ import { formatRegionName, parseReverseGeocodeRegion } from '@/entities/location
 import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/server';
 import { fetchWeather } from '@/entities/weather/api/server';
 
+// 10분마다 재생성 (ISR)
+export const revalidate = 600;
+
 interface PageProps {
   params: Promise<{
     lat: string;
@@ -27,18 +30,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function WeatherPage({ params }: PageProps) {
   const { lat, lon } = await params;
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000 * 10, // 10분
+      },
+    },
+  });
 
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: ['weather', Number(lat), Number(lon)],
       queryFn: () => fetchWeather(lat, lon),
-      staleTime: 60 * 1_000 * 10,
     }),
     queryClient.prefetchQuery({
       queryKey: ['reverse-geocode', Number(lat), Number(lon)],
       queryFn: () => fetchReverseGeocode(lat, lon),
-      staleTime: 60 * 1_000 * 10,
     }),
   ]);
 
