@@ -1,8 +1,6 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import type { Metadata } from 'next';
 
 import WeatherDetailPage from '@/_pages/weather-detail';
-import { formatRegionName, parseReverseGeocodeRegion } from '@/entities/location';
 import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/server';
 import { fetchWeather } from '@/entities/weather/api/server';
 
@@ -16,16 +14,16 @@ interface PageProps {
   }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { lat, lon } = await params;
-  const geocodeData = await fetchReverseGeocode(lat, lon);
-  const region = parseReverseGeocodeRegion(geocodeData);
-  const regionName = region ? formatRegionName(region) : `${lat}, ${lon}`;
+// export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+//   const { lat, lon } = await params;
+//   const geocodeData = await fetchReverseGeocode(lat, lon);
+//   const region = parseReverseGeocodeRegion(geocodeData);
+//   const regionName = region ? formatRegionName(region) : `${lat}, ${lon}`;
 
-  return {
-    title: `${regionName} 날씨`,
-  };
-}
+//   return {
+//     title: `${regionName} 날씨`,
+//   };
+// }
 
 export default async function WeatherPage({ params }: PageProps) {
   const { lat, lon } = await params;
