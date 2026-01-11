@@ -14,19 +14,10 @@ type Props = {
 
 export default function WeatherDetailPage({ lon, lat }: Props) {
   const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
-  const {
-    data: location,
-    isPending: isLocationPending,
-    isError: isLocationError,
-    error: locationError,
-  } = useReverseGeocodeQuery(lat, lon);
+  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(lat, lon);
 
   if (isError) {
     throw error;
-  }
-
-  if (isLocationError) {
-    throw locationError;
   }
 
   return (
@@ -49,7 +40,7 @@ export default function WeatherDetailPage({ lon, lat }: Props) {
               <CurrentWeatherCard
                 current={weatherData?.current}
                 today={weatherData?.daily[0]}
-                location={location}
+                location={location ?? null}
                 isLocationPending={isLocationPending}
               />
             </div>

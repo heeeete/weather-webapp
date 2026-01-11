@@ -5,9 +5,9 @@ import { CurrentWeather, DailyWeather } from '@/entities/weather/api/type';
 import { Card, CardContent } from '@/shared/ui/card';
 
 type Props = {
-  current?: CurrentWeather;
-  today?: DailyWeather;
-  location?: LocationRegionParts | null;
+  current: CurrentWeather;
+  today: DailyWeather;
+  location: LocationRegionParts | null;
   isLocationPending?: boolean;
 };
 

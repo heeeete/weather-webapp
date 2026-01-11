@@ -43,7 +43,7 @@ export default function HomePage() {
               <CurrentWeatherCard
                 current={weatherData?.current}
                 today={weatherData?.daily[0]}
-                location={location}
+                location={location ?? null}
                 isLocationPending={isLocationPending}
               />
             </div>
