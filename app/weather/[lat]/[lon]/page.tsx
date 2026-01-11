@@ -1,14 +1,13 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { Metadata } from 'next';
 
 import WeatherDetailPage from '@/_pages/weather-detail';
+import { formatRegionName, parseReverseGeocodeRegion } from '@/entities/location';
 import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/server';
 import { fetchWeather } from '@/entities/weather/api/server';
 
-// 10분마다 재생성 (ISR)
 export const revalidate = 600;
 
-// generateStaticParams가 있어야 정적 렌더링 + ISR이 작동함
-// 빈 배열 = 빌드 시 미리 생성하지 않음, dynamicParams = true면 요청 시 생성 후 캐시
 export async function generateStaticParams() {
   return [];
 }
@@ -21,16 +20,16 @@ interface PageProps {
   }>;
 }
 
-// export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-//   const { lat, lon } = await params;
-//   const geocodeData = await fetchReverseGeocode(lat, lon);
-//   const region = parseReverseGeocodeRegion(geocodeData);
-//   const regionName = region ? formatRegionName(region) : `${lat}, ${lon}`;
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lat, lon } = await params;
+  const geocodeData = await fetchReverseGeocode(lat, lon);
+  const region = parseReverseGeocodeRegion(geocodeData);
+  const regionName = region ? formatRegionName(region) : `${lat}, ${lon}`;
 
-//   return {
-//     title: `${regionName} 날씨`,
-//   };
-// }
+  return {
+    title: `${regionName} 날씨`,
+  };
+}
 
 export default async function WeatherPage({ params }: PageProps) {
   const { lat, lon } = await params;
