@@ -51,6 +51,7 @@ export default function CurrentWeatherCard({ current, today, location, isLocatio
                 icon={current.weather[0]?.icon}
                 description={weatherDescription}
                 size="xl"
+                ariaHidden={true}
               />
             </div>
           </div>
