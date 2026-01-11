@@ -7,7 +7,7 @@ export async function getGeocode(district: string): Promise<LatLon | null> {
   const res = await fetch(`/api/geocode?${qs.toString()}`);
 
   if (!res.ok) {
-    throw new Error(`geocode request failed: ${res.status}`);
+    throw new Error(`Geocode API 실패: ${res.status}`);
   }
 
   const data = (await res.json()) as GeocodeResponse;

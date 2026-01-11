@@ -42,6 +42,7 @@ export function useDistrictSearch(options: Options) {
       }
     } catch (error) {
       console.error('selectDistrict', error);
+      alert('문제가 발생했습니다. 다시 시도해주세요.');
     }
   };
 

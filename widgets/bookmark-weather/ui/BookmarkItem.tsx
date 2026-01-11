@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { TemperatureDisplay, useWeatherQuery } from '@/entities/weather';
 import { BookmarkToggle, EditBookmarkTrigger } from '@/features/bookmark';
-import { WeatherApiResponse } from '@/shared/api/open-weather/type';
+import { WeatherApiResponse } from '@/entities/weather/api/type';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Skeleton } from '@/shared/ui/skeleton';
 

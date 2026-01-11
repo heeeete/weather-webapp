@@ -14,10 +14,19 @@ type Props = {
 
 export default function WeatherDetailPage({ lon, lat }: Props) {
   const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
-  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(lat, lon);
+  const {
+    data: location,
+    isPending: isLocationPending,
+    isError: isLocationError,
+    error: locationError,
+  } = useReverseGeocodeQuery(lat, lon);
 
-  if (!isPending && isError) {
+  if (isError) {
     throw error;
+  }
+
+  if (isLocationError) {
+    throw locationError;
   }
 
   return (

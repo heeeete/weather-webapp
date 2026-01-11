@@ -2,8 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { getWeather } from '@/shared/api/open-weather/client';
-import type { WeatherApiResponse } from '@/shared/api/open-weather/type';
+import { getWeather, WeatherApiResponse } from '@/entities/weather';
 
 export function useWeatherQuery(lat?: number, lon?: number) {
   const enabled = lat != null && lon != null;
