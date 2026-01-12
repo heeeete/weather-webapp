@@ -1,4 +1,3 @@
-// entities/bookmark/model/store.ts
 import { toast } from 'sonner';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
