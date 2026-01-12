@@ -1,9 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { getGeocode } from '@/entities/location';
+import { locationQueries } from '@/entities/location';
 import { normalizeDistrictName } from '@/features/location-search/lib/normalizeDistrict';
 import koreaDistricts from '@/shared/assets/korea_districts.json';
 
@@ -17,6 +18,7 @@ export function useDistrictSearch(options: Options) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+  const qc = useQueryClient();
 
   const districts = useMemo(() => koreaDistricts.map((d) => normalizeDistrictName(d)), []);
 
@@ -33,7 +35,7 @@ export function useDistrictSearch(options: Options) {
     setQuery(district);
     setOpen(false);
     try {
-      const data = await getGeocode(district);
+      const data = await qc.fetchQuery(locationQueries.geocode(district));
 
       if (data) {
         router.push(`/weather/${data.lat}/${data.lon}`);

@@ -4,7 +4,6 @@ export { default as LocationDisplay } from './ui/LocationDisplay';
 // API & Queries
 export { locationQueries } from './api/location.queries';
 export { locationKeys } from './api/location.keys';
-export { getGeocode } from './api/geocode/get-geocode.client';
 
 // Lib
 export { formatRegionName } from './lib/format-region-name';
