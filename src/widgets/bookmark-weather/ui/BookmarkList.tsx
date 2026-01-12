@@ -13,10 +13,12 @@ export default function BookmarkList() {
   const [editing, setEditing] = useState<{ id: string; name: string } | null>(null);
 
   return (
-    <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
+    <div className="columns-1 gap-4 space-y-4 md:columns-2">
       {bookmarks.map(({ id, name }) => {
         return (
-          <BookmarkItem key={id} id={id} name={name} onEdit={() => setEditing({ id, name })} />
+          <div key={id} className="break-inside-avoid">
+            <BookmarkItem id={id} name={name} onEdit={() => setEditing({ id, name })} />
+          </div>
         );
       })}
       <EditBookmarkDialog

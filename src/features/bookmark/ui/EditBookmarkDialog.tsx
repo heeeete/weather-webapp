@@ -28,9 +28,9 @@ export default function EditBookmarkDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="flex flex-col">
         <DialogHeader>
-          <DialogTitle>{defaultName}</DialogTitle>
+          <DialogTitle className="truncate">{defaultName}</DialogTitle>
           <DialogDescription>즐겨찾기 이름을 수정할 수 있습니다.</DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="flex flex-col gap-2">
