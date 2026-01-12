@@ -30,7 +30,7 @@ export default function Error({
 
       <div className="space-y-2">
         {/* <h1 className="text-5xl font-bold">500</h1> */}
-        <p className="text-lg text-muted-foreground">일시적인 오류가 발생했습니다</p>
+        <p className="text-lg text-muted-foreground">{error.message}</p>
       </div>
 
       <div className="flex gap-2">

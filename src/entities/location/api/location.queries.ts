@@ -3,7 +3,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { parseReverseGeocodeRegion } from '../lib/parse-reverse-geocode';
 
 import { getGeocode } from './geocode/get-geocode.client';
-import { LatLon } from './geocode/types';
+import { GeocodeResponse } from './geocode/types';
 import { getReverseGeocode } from './reverse-geocode/get-reverse-geocode.client';
 import type { LocationRegionParts, ReverseGeocodeResponse } from './reverse-geocode/types';
 import { locationKeys } from './location.keys';
@@ -20,7 +20,7 @@ export const locationQueries = {
     }),
 
   geocode: (district?: string) =>
-    queryOptions<LatLon | null, Error>({
+    queryOptions<GeocodeResponse, Error>({
       queryKey: locationKeys.geocode(district),
       queryFn: () => getGeocode(district!),
       enabled: !!district?.trim(),

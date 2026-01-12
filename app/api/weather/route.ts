@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { fetchWeather, REVALIDATE_SEC } from '@/entities/weather/api/fetch-weather.server';
+import { ApiError } from '@/shared/api/api-client';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -23,8 +24,15 @@ export async function GET(req: Request) {
     });
   } catch (error) {
     console.error('[GET /api/weather]', error);
+    if (error instanceof ApiError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.status, headers: { 'Cache-Control': 'no-store' } },
+      );
+    }
+
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : '날씨 정보 요청에 실패했습니다.' },
+      { error: '날씨 정보 요청에 실패했습니다.' },
       { status: 502, headers: { 'Cache-Control': 'no-store' } },
     );
   }

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { locationQueries } from '@/entities/location';
+import { locationQueries, parseGeocode } from '@/entities/location';
 import { normalizeDistrictName } from '@/features/location-search/lib/normalizeDistrict';
 import koreaDistricts from '@/shared/assets/korea_districts.json';
 
@@ -35,9 +35,10 @@ export function useDistrictSearch(options: Options) {
     setQuery(district);
     setOpen(false);
     try {
-      const data = await qc.fetchQuery(locationQueries.geocode(district));
+      const rawData = await qc.fetchQuery(locationQueries.geocode(district));
+      const data = parseGeocode(rawData);
 
-      if (data) {
+      if (data && data.lat != null && data.lon != null) {
         router.push(`/weather/${data.lat}/${data.lon}`);
       } else {
         alert('주소를 찾을 수 없습니다.');
