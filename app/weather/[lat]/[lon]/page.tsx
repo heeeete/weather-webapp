@@ -1,10 +1,10 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { Metadata } from 'next';
 
-import WeatherDetailPage from '@/pages/weather-detail';
 import { formatRegionName, parseReverseGeocodeRegion } from '@/entities/location';
 import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/server';
 import { fetchWeather } from '@/entities/weather/api/server';
+import WeatherDetailPage from '@/pages/weather-detail';
 
 export const revalidate = 600;
 

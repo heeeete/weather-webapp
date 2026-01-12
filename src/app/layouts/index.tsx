@@ -4,9 +4,9 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { Toaster } from '@/shared/ui/sonner';
 import { BottomNav, Header } from '@/widgets/layouts';
 
-import QueryProvider from '../../../app/_providers/QueryProvider';
-
 import '@/app/styles';
+
+import { QueryProvider } from '../providers/query-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description: '실시간 날씨 정보를 확인하세요',
 };
 
-export  function RootLayout({
+export function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
