@@ -1,9 +1,10 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { Metadata } from 'next';
 
-import { formatRegionName, parseReverseGeocodeRegion } from '@/entities/location';
-import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/server';
-import { fetchWeather } from '@/entities/weather/api/server';
+import { formatRegionName, locationKeys, parseReverseGeocodeRegion } from '@/entities/location';
+import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/fetch-reverse-geocode.server';
+import { weatherKeys } from '@/entities/weather';
+import { fetchWeather } from '@/entities/weather/api/fetch-weather.server';
 import WeatherDetailPage from '@/pages/weather-detail';
 
 export const revalidate = 600;
@@ -44,11 +45,11 @@ export default async function WeatherPage({ params }: PageProps) {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: ['weather', Number(lat), Number(lon)],
+      queryKey: weatherKeys.detail(Number(lat), Number(lon)),
       queryFn: () => fetchWeather(lat, lon),
     }),
     queryClient.prefetchQuery({
-      queryKey: ['reverse-geocode', Number(lat), Number(lon)],
+      queryKey: locationKeys.reverseGeocode(Number(lat), Number(lon)),
       queryFn: () => fetchReverseGeocode(lat, lon),
     }),
   ]);

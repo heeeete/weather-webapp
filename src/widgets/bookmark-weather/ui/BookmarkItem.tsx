@@ -1,11 +1,11 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 
-import { TemperatureDisplay, useWeatherQuery } from '@/entities/weather';
+import { TemperatureDisplay, WeatherApiResponse, weatherQueries } from '@/entities/weather';
 import { BookmarkToggle, EditBookmarkTrigger } from '@/features/bookmark';
-import { WeatherApiResponse } from '@/entities/weather/api/type';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Skeleton } from '@/shared/ui/skeleton';
 
@@ -19,7 +19,11 @@ export default function BookmarkItem({
   onEdit: () => void;
 }) {
   const [lat, lon] = id.split(',');
-  const { data: weatherData, isPending, isError } = useWeatherQuery(Number(lat), Number(lon));
+  const {
+    data: weatherData,
+    isPending,
+    isError,
+  } = useQuery(weatherQueries.detail(Number(lat), Number(lon)));
 
   return (
     <Link href={`/weather/${lat}/${lon}`}>

@@ -1,7 +1,9 @@
 'use client';
 
-import { useReverseGeocodeQuery } from '@/entities/location';
-import { useWeatherQuery } from '@/entities/weather';
+import { useQuery } from '@tanstack/react-query';
+
+import { locationQueries } from '@/entities/location';
+import { weatherQueries } from '@/entities/weather';
 import { useCurrentLocation } from '@/features/location-detect';
 import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
@@ -12,10 +14,14 @@ import { PermissionDenied } from './PermissionDenied';
 export default function HomePage() {
   const { state } = useCurrentLocation({ auto: true });
 
-  const { data: weatherData, isPending, error, isError } = useWeatherQuery(state.lat, state.lon);
-  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(
-    state.lat,
-    state.lon,
+  const {
+    data: weatherData,
+    isPending,
+    error,
+    isError,
+  } = useQuery(weatherQueries.detail(state.lat, state.lon));
+  const { data: location, isPending: isLocationPending } = useQuery(
+    locationQueries.reverseGeocode(state.lat, state.lon),
   );
 
   if (state.status === 'denied') {

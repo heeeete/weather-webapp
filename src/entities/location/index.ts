@@ -1,9 +1,10 @@
 // UI
 export { default as LocationDisplay } from './ui/LocationDisplay';
-export { useReverseGeocodeQuery } from './model/useReverseGeocodeQuery';
 
-// API
-export { getGeocode } from './api/geocode/client';
+// API & Queries
+export { locationQueries } from './api/location.queries';
+export { locationKeys } from './api/location.keys';
+export { getGeocode } from './api/geocode/get-geocode.client';
 
 // Lib
 export { formatRegionName } from './lib/format-region-name';

@@ -1,7 +1,9 @@
 'use client';
 
-import { formatRegionName, useReverseGeocodeQuery } from '@/entities/location';
-import { useWeatherQuery } from '@/entities/weather';
+import { useQuery } from '@tanstack/react-query';
+
+import { formatRegionName, locationQueries } from '@/entities/location';
+import { weatherQueries } from '@/entities/weather';
 import { BookmarkToggle } from '@/features/bookmark';
 import { SearchBar } from '@/features/location-search';
 import { Spinner } from '@/shared/ui/spinner';
@@ -13,8 +15,15 @@ type Props = {
 };
 
 export default function WeatherDetailPage({ lon, lat }: Props) {
-  const { data: weatherData, isPending, error, isError } = useWeatherQuery(lat, lon);
-  const { data: location, isPending: isLocationPending } = useReverseGeocodeQuery(lat, lon);
+  const {
+    data: weatherData,
+    isPending,
+    error,
+    isError,
+  } = useQuery(weatherQueries.detail(lat, lon));
+  const { data: location, isPending: isLocationPending } = useQuery(
+    locationQueries.reverseGeocode(lat, lon),
+  );
 
   if (isError) {
     throw error;

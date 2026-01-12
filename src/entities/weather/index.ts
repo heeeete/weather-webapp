@@ -2,11 +2,10 @@
 export { WeatherIcon } from './ui/WeatherIcon';
 export { TemperatureDisplay } from './ui/TemperatureDisplay';
 
-// Model
-export { useWeatherQuery } from './model/useWeatherQuery';
-
-// API
-export { getWeather } from './api/client';
+// API & Queries
+export { weatherQueries } from './api/weather.queries';
+export { weatherKeys } from './api/weather.keys';
+export { getWeather } from './api/get-weather.client';
 
 // Types
 export type { WeatherApiResponse } from './api/type';
