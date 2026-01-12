@@ -29,28 +29,26 @@ export default function BookmarkItem({
     <Link href={`/weather/${lat}/${lon}`}>
       <span className="sr-only">상세 보기</span>
       <Card className="cursor-pointer transition-colors hover:bg-muted/50">
-        <CardContent className="flex items-center gap-4">
-          <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
-            <MapPin className="size-5 text-primary" aria-hidden="true" />
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
+              <MapPin className="size-5 text-primary" aria-hidden="true" />
+            </div>
+            <div
+              className="flex items-center justify-end gap-2"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <BookmarkToggle locationId={id} name={name} />
+              <EditBookmarkTrigger onClick={onEdit} />
+            </div>
           </div>
-
-          <div className="flex flex-1 flex-col gap-4">
-            <h3 className="text-lg font-medium max-sm:text-base">
-              {name}
-              <span className="sr-only">상세 날씨로 이동</span>
-            </h3>
-            <WeatherSummary weatherData={weatherData} isPending={isPending} isError={isError} />
-          </div>
-
-          <div
-            className="flex items-center gap-2"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <BookmarkToggle locationId={id} name={name} />
-            <EditBookmarkTrigger onClick={onEdit} />
-          </div>
+          <h3 className="text-lg font-medium wrap-break-word max-sm:text-base">
+            {name}
+            <span className="sr-only">상세 날씨로 이동</span>
+          </h3>
+          <WeatherSummary weatherData={weatherData} isPending={isPending} isError={isError} />
         </CardContent>
       </Card>
     </Link>
