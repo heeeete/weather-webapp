@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { fetchWeather, REVALIDATE_SEC } from '@/entities/weather/api/server';
+import { fetchWeather, REVALIDATE_SEC } from '@/entities/weather/api/fetch-weather.server';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

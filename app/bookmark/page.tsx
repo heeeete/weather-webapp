@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import BookmarkPage from '@/_pages/bookmark';
+import BookmarkPage from '@/pages/bookmark';
 
 export const metadata: Metadata = {
   title: '즐겨찾기',

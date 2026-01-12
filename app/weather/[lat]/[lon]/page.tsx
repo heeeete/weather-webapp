@@ -1,12 +1,19 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { Metadata } from 'next';
 
-import WeatherDetailPage from '@/_pages/weather-detail';
-import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/server';
-import { fetchWeather } from '@/entities/weather/api/server';
+import { formatRegionName, locationKeys, parseReverseGeocodeRegion } from '@/entities/location';
+import { fetchReverseGeocode } from '@/entities/location/api/reverse-geocode/fetch-reverse-geocode.server';
+import { weatherKeys } from '@/entities/weather';
+import { fetchWeather } from '@/entities/weather/api/fetch-weather.server';
+import WeatherDetailPage from '@/pages/weather-detail';
 
-// 10분마다 재생성 (ISR)
 export const revalidate = 600;
 
+export async function generateStaticParams() {
+  return [];
+}
+
+export const dynamicParams = true;
 interface PageProps {
   params: Promise<{
     lat: string;
@@ -14,16 +21,16 @@ interface PageProps {
   }>;
 }
 
-// export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-//   const { lat, lon } = await params;
-//   const geocodeData = await fetchReverseGeocode(lat, lon);
-//   const region = parseReverseGeocodeRegion(geocodeData);
-//   const regionName = region ? formatRegionName(region) : `${lat}, ${lon}`;
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lat, lon } = await params;
+  const geocodeData = await fetchReverseGeocode(lat, lon);
+  const region = parseReverseGeocodeRegion(geocodeData);
+  const regionName = region ? formatRegionName(region) : `${lat}, ${lon}`;
 
-//   return {
-//     title: `${regionName} 날씨`,
-//   };
-// }
+  return {
+    title: `${regionName} 날씨`,
+  };
+}
 
 export default async function WeatherPage({ params }: PageProps) {
   const { lat, lon } = await params;
@@ -38,11 +45,11 @@ export default async function WeatherPage({ params }: PageProps) {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: ['weather', Number(lat), Number(lon)],
+      queryKey: weatherKeys.detail(Number(lat), Number(lon)),
       queryFn: () => fetchWeather(lat, lon),
     }),
     queryClient.prefetchQuery({
-      queryKey: ['reverse-geocode', Number(lat), Number(lon)],
+      queryKey: locationKeys.reverseGeocode(Number(lat), Number(lon)),
       queryFn: () => fetchReverseGeocode(lat, lon),
     }),
   ]);

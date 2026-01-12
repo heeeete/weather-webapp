@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import HomePage from '@/_pages/home';
+import HomePage from '@/pages/home';
 
 export const metadata: Metadata = {
   title: '현재 위치 날씨',

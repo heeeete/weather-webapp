@@ -4,7 +4,7 @@ import {
   fetchReverseGeocode,
   REVALIDATE_SEC,
   STALE_SEC,
-} from '@/entities/location/api/reverse-geocode/server';
+} from '@/entities/location/api/reverse-geocode/fetch-reverse-geocode.server';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
