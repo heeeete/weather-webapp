@@ -13,7 +13,7 @@
 - [기술적 의사결정](#-기술적-의사결정-및-이유)
 - [주요 기능](#-주요-기능)
 - [문제 해결](#-문제-해결)
-
+- [느낀점](#-느낀점)
 
 ## 🚀 실행 방법
 
@@ -41,28 +41,25 @@
 - **Next.js 16.1** (App Router)
   - React Server Components와 App Router를 활용한 최신 아키텍처 적용
   - ISR(Incremental Static Regeneration)을 통한 성능 최적화
-  - 서버/클라이언트 컴포넌트 분리로 번들 사이즈 최소화
+
 
 - **TypeScript**
-  - 엄격한 타입 체크를 통한 런타임 에러 사전 방지
-  - API 응답 타입 정의로 안전한 데이터 핸들링
+  - 정적 타입 체크를 통해 런타임 에러 가능성을 사전에 줄임
 
 - **pnpm**
-  - 빠른 설치 속도와 효율적인 디스크 공간 활용
-
+  - 패키지 재사용(store) 구조로 설치 속도 향상 및 디스크 공간 절약
 ### State Management & Data Fetching
 
 - **Zustand** (with persist middleware)
-  - Redux보다 가볍고 보일러플레이트가 적음
-  - `persist` 미들웨어로 localStorage 동기화 자동 처리
-  - 북마크 기능처럼 전역 상태가 필요한 경우에 적합
+  - 간결한 API로 전역 상태를 비교적 적은 코드로 관리
+  - persist 미들웨어로 북마크 데이터를 localStorage에 저장/복원
+  - 여러 페이지/컴포넌트에서 공유되는 상태(북마크 등)에 적합
 
 ### UI & Styling
 
 - **Tailwind CSS v4**
   - 유틸리티 우선 접근 방식으로 빠른 스타일링
-  - JIT 모드로 사용하지 않는 스타일 자동 제거
-
+  - 빌드 시 사용한 클래스만 생성하여 CSS 크기를 최적화
 - **shadcn/ui**
   - Radix UI 기반의 접근성 높은 컴포넌트
   - 커스터마이징이 자유로워 디자인 시스템 구축에 유리
@@ -118,33 +115,27 @@ weather-webapp/
 
 ## 💡 기술적 의사결정 및 이유
 
-### 1️⃣ OpenWeather API 선택
+### 1️⃣ 외부 API 선택
 
-**선택 이유:**
+1. **Weather API** (OpenWeather)
+  - 위도/경도 기반 날씨 정보 제공 → Geolocation API와 자연스러운 연동
+  - (비교) 공공데이터포털 API는 X/Y 격자 좌표 변환이 필요해 구현 복잡도가 증가
 
-- 위도/경도 기반 날씨 정보 제공 → Geolocation API와 자연스러운 연동
-- 공공데이터포털 API는 X/Y 격자 좌표 변환이 필요해 복잡도 증가
+2. **Geocode API** (Naver Maps)
+  - 사용자가 검색한 지역명 → 위도/경도 변환
+  - 예: "서울시 강남구" → `{lat: 37.4979, lon: 127.0276}`
 
-**API 구성:**
+3. **Reverse Geocode API** (Naver Maps)
+  - 위도/경도 → 상세 주소 변환
+  - 사용자에게 "서울특별시 강남구 역삼동"처럼 읽기 쉬운 지역명 표시
+  - 검색한 지역명을 저장할 수도 있지만, 현재 좌표의 **정확한 행정구역명**을 보여주는 게 UX상 더 좋다고 판단
 
-1. **Geocode API** (Naver Maps)
-   - 사용자가 검색한 지역명 → 위도/경도 변환
-   - 예: "서울시 강남구" → `{lat: 37.4979, lon: 127.0276}`
-
-2. **Reverse Geocode API** (Naver Maps)
-   - 위도/경도 → 상세 주소 변환
-   - 사용자에게 "서울특별시 강남구 역삼동"처럼 읽기 쉬운 지역명 표시
-   - 검색한 지역명을 저장할 수도 있지만, 현재 좌표의 **정확한 행정구역명**을 보여주는 게 UX상 더 좋다고 판단
-
-3. **Weather API** (OpenWeather)
-   - 위도/경도로 현재 날씨, 시간별 예보, 일별 예보 조회
 
 ### 2️⃣ Zustand + persist 조합
 
 **선택 이유:**
 
 - 북마크는 **로컬 상태**이며 **새로고침 시 유지**되어야 함
-- Redux Toolkit + persist는 설정이 복잡하고 보일러플레이트가 많음
 - Zustand는 간결하면서도 `persist` 미들웨어로 localStorage 동기화 자동 처리
 
 **구현 세부사항:**
@@ -167,10 +158,10 @@ export const useBookmarkStore = create<BookmarkState>()(
 
 ### 3️⃣ ISR(Incremental Static Regeneration) 적용
 
-- 날씨 데이터는 자주 변하지만, **모든 요청마다 새로 렌더링할 필요는 없음**
-- 특정 지역의 날씨 페이지는 여러 사용자가 조회할 수 있음 → 캐싱 효과 높음
+- 날씨 데이터는 자주 변하지만, **매 요청마다 서버에서 새로 렌더링할 필요는 없음**
+- 동일한 지역의 날씨 페이지는 여러 사용자가 반복 조회할 수 있어 **캐시 효율이 높음**
 - 캐싱 유지 기간을 10분으로 설정한 이유
-  - OpenWeather의 날씨 데이터는 문서상 갱신 주기가 약 10분으로 안내되어 있어, 불필요한 리렌더링을 줄이기 위해 revalidate=600을 적용
+  - OpenWeather의 날씨 데이터는 문서상 갱신 주기가 **약 10분으로 안내**되어 있어, 불필요한 리렌더링을 줄이기 위해 revalidate=600을 적용
 
 **적용 방법:**
 
@@ -215,7 +206,7 @@ export class ApiClient { /* ... */ }
 
 **구현 내용:**
 
-- **Geolocation API**로 사용자의 현재 위도/경도 자동 감지
+- **Geolocation API**로 사용자의 현재 위도/경도 감지
 - 위치 권한 거부 시 안내 화면 표시
 - Reverse Geocode API로 좌표를 "서울특별시 강남구 역삼동" 형식의 주소로 변환
 - 현재 날씨, 시간별 예보, 일별 예보 표시
@@ -250,7 +241,7 @@ export function useCurrentLocation(options?:  { auto?: boolean }) {
 
 **UX 고려사항:**
 
-- 위치 조회/대기/날씨 조회 중에는 로딩 스피너 표시
+- 위치 조회/날씨 조회 중에는 로딩 스피너 표시
 - 권한 거부 시 명확한 안내 메시지 제공
 - 좌표는 소수점 4자리까지만 사용 (캐시 성능 향상)
 
@@ -285,14 +276,7 @@ Geocode API 호출
 ```typescript
 // app/weather/[lat]/[lon]/page.tsx
 export default async function WeatherPage({ params }: PageProps) {
-  const { lat, lon } = await params;
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000 * 10, // 10분
-      },
-    },
-  });
+  ...
 
   // 병렬 prefetch + hydration으로 중복 요청 제거(워터폴 방지)
   await Promise.all([
@@ -306,11 +290,7 @@ export default async function WeatherPage({ params }: PageProps) {
     }),
   ]);
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <WeatherDetailPage lat={Number(lat)} lon={Number(lon)} />
-    </HydrationBoundary>
-  );
+  ...
 }
 ```
 
@@ -372,7 +352,7 @@ update: (id, name) => {
 - 이름 수정 모달에서 Enter 키로 저장
 - 빈 상태일 때 안내 메시지 표시
 
-<br />
+---
 
 ## 🛠 문제 해결
 
@@ -392,7 +372,6 @@ update: (id, name) => {
 
 #### 해결
 
-동적 라우트를 **요청 시 생성 후 캐시(ISR)** 하게 만들기 위해 아래 설정을 추가:
 
 ```ts
 export const revalidate = 600;
@@ -438,7 +417,7 @@ Export encountered an error on /home/ui/HomePage, exiting the build.
 **문제 상황:**
 
 - 프로젝트는 **App Router** 구조로 `app/layout.ts`를 사용하고 있었음
-- `pages/`는 "라우트"가 아니라 단순히 **컴포넌트를 모아두는 폴더**로 사용 (FSD 아키텍처)
+- `pages/`는 라우트가 아니라 단순히 **컴포넌트를 모아두는 폴더**로 사용 (FSD 아키텍처)
 - `app/page.tsx`에서 `pages/home/ui/HomePage.tsx`를 import해서 사용
 
 **Next.js의 동작:**
@@ -450,13 +429,24 @@ Export encountered an error on /home/ui/HomePage, exiting the build.
 
 #### 해결
 
-`pages/` 디렉토리가 라우팅 대상으로 인식되지 않도록 이름을 변경:
+`pages/` 디렉토리가 라우팅 대상으로 인식되지 않도록 경로를 변경:
 
 ```
 pages/ → src/pages/
+pages/README.md
 ```
 
 #### 정리
 
 - 컴포넌트 보관용 폴더는 pages/처럼 Next.js가 라우팅에 사용하는 예약 디렉토리명을 피하는 것이 안전하다.
 - FSD 구조를 사용할 경우 src/ 하위로 구성(src/pages, src/widgets, src/features 등)하면 Next.js 라우팅과 충돌할 가능성이 줄어든다..
+
+---
+
+## ⭐ 느낀점
+
+이번 과제를 진행하면서 가장 시간을 많이 쏟은 부분은 FSD 아키텍처를 적용하고 익숙해지는 과정이었습니다. 처음에는 **레이어/슬라이스/세그먼트** 개념이 낯설어서, **이 함수와 컴포넌트는 어디에 둬야 하지?** 같은 고민을 계속 했고 파일 위치를 옮기고 구조를 쪼개는 일을 반복했습니다.
+
+하지만 3일차쯤부터는 구조에 점점 익숙해졌고, 기능을 추가할 때 entities를 조합해 빠르게 확장할 수 있었습니다. 특히 한 번 만들어 둔 로직과 UI가 다른 화면에서도 자연스럽게 재사용되는 경험을 하면서 왜 FSD를 쓰는지를 체감했습니다.
+
+결과적으로 이번 과제는 FSD 아키텍처의 장점을 직접 경험한 프로젝트였습니다. 다음 프로젝트에서도 규모나 요구사항에 맞다면 FSD 적용을 적극적으로 고려해볼 생각입니다.
