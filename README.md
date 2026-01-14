@@ -198,7 +198,7 @@ export const dynamicParams = true; // 요청 시 생성 허용
 - query string 생성 로직을 유틸로 분리해 중복 제거
 
 ```js
-// src/shared/api/client.ts
+// src/shared/api/api-client.ts
 export class ApiError extends Error { /* ... */ }
 export class ApiClient { /* ... */ }
 ```
@@ -280,6 +280,14 @@ Geocode API 호출
 
 ```typescript
 // app/weather/[lat]/[lon]/page.tsx
+
+// ISR: 캐시된 페이지를 재사용하고 10분마다 재생성
+export const revalidate = 600;
+export async function generateStaticParams() {
+  return [];
+}
+export const dynamicParams = true;
+
 export default async function WeatherPage({ params }: PageProps) {
   ...
 
