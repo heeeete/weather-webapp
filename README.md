@@ -50,10 +50,15 @@
   - 패키지 재사용(store) 구조로 설치 속도 향상 및 디스크 공간 절약
 ### State Management & Data Fetching
 
-- **Zustand** (with persist middleware)
+- **Zustand** (persist middleware)
   - 간결한 API로 전역 상태를 비교적 적은 코드로 관리
   - persist 미들웨어로 북마크 데이터를 localStorage에 저장/복원
   - 여러 페이지/컴포넌트에서 공유되는 상태(북마크 등)에 적합
+  - selector로 스토어 조회 로직을 분리해 재사용성과 가독성 개선
+
+- **TanStack Query**
+  - 서버 상태(날씨/지오코딩) 캐싱 및 hydration으로 중복 요청 방지
+  - queryOptions 기반 Query Options Factory로 쿼리 키/옵션을 일관되게 관리
 
 ### UI & Styling
 
