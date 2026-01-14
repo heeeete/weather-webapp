@@ -1,3 +1,5 @@
+import { ApiError } from '@/shared/api/api-client';
+
 import 'server-only';
 
 const REVALIDATE_SEC = 60 * 60 * 24; // 1일
@@ -9,7 +11,7 @@ export async function fetchReverseGeocode(lat: string, lon: string) {
 
   if (!clientId || !clientSecret) {
     console.error('[fetchReverseGeocode] NAVER API 키가 설정되지 않음');
-    throw new Error('서버 설정 오류가 발생했습니다.');
+    throw new ApiError('서버 설정 오류가 발생했습니다.', 500);
   }
 
   const params = new URLSearchParams({
@@ -34,12 +36,13 @@ export async function fetchReverseGeocode(lat: string, lon: string) {
   if (!res.ok) {
     const text = await res.text();
     console.error(`[fetchReverseGeocode] Naver API 실패: ${res.status}`, text);
-    throw new Error(`위치 정보를 가져올 수 없습니다. (${res.status})`);
+    throw new ApiError(`위치 정보를 가져올 수 없습니다. (${res.status})`, 502, {
+      upstreamStatus: res.status,
+      upstreamBody: text,
+    });
   }
 
-  const data = await res.json();
-
-  return data;
+  return res.json();
 }
 
 export { REVALIDATE_SEC, STALE_SEC };

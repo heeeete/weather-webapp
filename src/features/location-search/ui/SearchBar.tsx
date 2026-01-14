@@ -13,16 +13,11 @@ import {
 
 import { useDistrictSearch } from '../model/useDistrictSearch';
 
-interface Props {
-  limit?: number;
-  onSelectDistrict?: (district: string) => void;
-}
-
-export default function SearchBar({ limit = 50, onSelectDistrict }: Props) {
+export default function SearchBar() {
   const rootRef = useRef<HTMLDivElement>(null);
 
   const { query, items, show, onChangeQuery, onFocus, onBlur, onKeyDown, selectDistrict } =
-    useDistrictSearch({ limit, onSelectDistrict });
+    useDistrictSearch();
 
   return (
     <div ref={rootRef} className="relative w-full max-w-xl">
@@ -38,7 +33,10 @@ export default function SearchBar({ limit = 50, onSelectDistrict }: Props) {
         />
 
         {show && (
-          <CommandList className="absolute top-full right-0 left-0 z-50 mt-2 max-h-80 overflow-auto rounded-xl border bg-background shadow-md">
+          <CommandList
+            onMouseDown={(e) => e.preventDefault()}
+            className="absolute top-full right-0 left-0 z-50 mt-2 max-h-80 overflow-auto rounded-xl border bg-background shadow-md"
+          >
             <CommandEmpty>해당 장소의 정보가 제공되지 않습니다.</CommandEmpty>
 
             <CommandGroup heading={`검색 결과 (${items.length}개)`}>

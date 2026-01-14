@@ -4,17 +4,12 @@ import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { locationQueries } from '@/entities/location';
+import { locationQueries, parseGeocode } from '@/entities/location';
 import { normalizeDistrictName } from '@/features/location-search/lib/normalizeDistrict';
 import koreaDistricts from '@/shared/assets/korea_districts.json';
 
-interface Options {
-  limit?: number;
-  onSelectDistrict?: (district: string) => void;
-}
-
-export function useDistrictSearch(options: Options) {
-  const limit = options.limit ?? 50;
+export function useDistrictSearch() {
+  const limit = 50;
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -25,8 +20,7 @@ export function useDistrictSearch(options: Options) {
   const items = useMemo(() => {
     const q = query.trim();
     if (!q) return [];
-    const qLower = q.toLowerCase();
-    return districts.filter((d) => d.toLowerCase().includes(qLower)).slice(0, limit);
+    return districts.filter((d) => d.includes(q)).slice(0, limit);
   }, [query, limit, districts]);
 
   const show = open && query.trim().length > 0;
@@ -35,9 +29,10 @@ export function useDistrictSearch(options: Options) {
     setQuery(district);
     setOpen(false);
     try {
-      const data = await qc.fetchQuery(locationQueries.geocode(district));
+      const rawData = await qc.fetchQuery(locationQueries.geocode(district));
+      const data = parseGeocode(rawData);
 
-      if (data) {
+      if (data && data.lat != null && data.lon != null) {
         router.push(`/weather/${data.lat}/${data.lon}`);
       } else {
         alert('주소를 찾을 수 없습니다.');

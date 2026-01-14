@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 
 const REVALIDATE_SEC = 60 * 60 * 24; // 1일
-const STALE_SEC = 60 * 60 * 24; // 1일
+const STALE_SEC = 60 * 60 * 24 * 7; // 7일
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const district = searchParams.get('district');
 
-  if (!district) {
+  if (district == null) {
     return NextResponse.json(
       { error: '지역명은 필수입니다.' },
       { status: 400, headers: { 'Cache-Control': 'no-store' } },
@@ -17,7 +17,7 @@ export async function GET(req: Request) {
   const clientId = process.env.NAVER_CLIENT_ID;
   const clientSecret = process.env.NAVER_CLIENT_SECRET;
 
-  if (!clientId || !clientSecret) {
+  if (clientId == null || clientSecret == null) {
     console.error('[GET /api/geocode] NAVER API 키가 설정되지 않음');
     return NextResponse.json(
       { error: '서버 설정 오류가 발생했습니다.' },
@@ -40,7 +40,6 @@ export async function GET(req: Request) {
       },
       next: {
         revalidate: REVALIDATE_SEC,
-        tags: ['geocode', district],
       },
     });
 

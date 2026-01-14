@@ -11,7 +11,7 @@ export async function GET(req: Request) {
   const lon = searchParams.get('lon');
   const lat = searchParams.get('lat');
 
-  if (!lon || !lat) {
+  if (lon == null || lat == null) {
     return NextResponse.json(
       { error: '위도와 경도는 필수입니다.' },
       { status: 400, headers: { 'Cache-Control': 'no-store' } },
