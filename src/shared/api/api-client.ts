@@ -30,7 +30,6 @@ export class ApiClient {
   }
 
   private async safeJson(response: Response) {
-    // 204 같은 케이스 + JSON이 아닌 응답 대비
     const contentType = response.headers.get('content-type') ?? '';
     if (response.status === 204 || !contentType.includes('application/json')) return null;
 
