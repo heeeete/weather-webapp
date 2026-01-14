@@ -209,6 +209,8 @@ export class ApiClient { /* ... */ }
 
 ### 1️⃣ 메인 페이지 (현재 위치 기반 날씨)
 
+<img width="1346" height="945" alt="weather-webapp-inky vercel app_ (2)" src="https://github.com/user-attachments/assets/c88a3c4a-72d2-466e-9033-384c7108f6ca" />
+
 **구현 내용:**
 
 - **Geolocation API**로 사용자의 현재 위도/경도 감지
@@ -253,6 +255,8 @@ export function useCurrentLocation(options?:  { auto?: boolean }) {
 ---
 
 ### 2️⃣ 날씨 페이지 (검색 기반 날씨)
+
+<img width="627" height="410" alt="image" src="https://github.com/user-attachments/assets/b847ffb7-d021-4d12-8e8a-e8b1d84cfeb1" />
 
 **구현 내용:**
 
@@ -302,6 +306,8 @@ export default async function WeatherPage({ params }: PageProps) {
 ---
 
 ### 3️⃣ 북마크 페이지
+
+<img width="1331" height="1231" alt="weather-webapp-inky vercel app_bookmark" src="https://github.com/user-attachments/assets/1eeea6d6-9ac1-4c78-8f86-aaaec8cf27df" />
 
 **구현 내용:**
 
