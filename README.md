@@ -74,13 +74,21 @@
   - 가볍고 일관된 아이콘 라이브러리
   - Tree-shaking 지원
 
+### Tooling
+
+- **ESLint**
+  - 일관된 코드 스타일과 잠재적 버그를 린트 단계에서 탐지
+
+- **Prettier**
+  - 포맷을 자동화하여 스타일 논쟁을 줄이고 일관성 유지
+
 ### Libraries
 
 - **dayjs**
   - moment.js 대비 가벼운 용량 (2KB)
   - 날씨 데이터의 시간 포맷팅에 사용
 
-<br />
+---
 
 ## 📁 프로젝트 구조
 
@@ -198,7 +206,7 @@ export const dynamicParams = true; // 요청 시 생성 허용
 - query string 생성 로직을 유틸로 분리해 중복 제거
 
 ```js
-// src/shared/api/client.ts
+// src/shared/api/api-client.ts
 export class ApiError extends Error { /* ... */ }
 export class ApiClient { /* ... */ }
 ```
@@ -284,6 +292,14 @@ Geocode API 호출
 
 ```typescript
 // app/weather/[lat]/[lon]/page.tsx
+
+// ISR: 캐시된 페이지를 재사용하고 10분마다 재생성
+export const revalidate = 600;
+export async function generateStaticParams() {
+  return [];
+}
+export const dynamicParams = true;
+
 export default async function WeatherPage({ params }: PageProps) {
   ...
 
@@ -456,8 +472,8 @@ pages/README.md
 
 ## ⭐ 느낀점
 
-이번 과제를 진행하면서 가장 시간을 많이 쏟은 부분은 FSD 아키텍처를 적용하고 익숙해지는 과정이었습니다. 처음에는 **레이어/슬라이스/세그먼트** 개념이 낯설어서, **이 함수와 컴포넌트는 어디에 둬야 하지?** 같은 고민을 계속 했고 파일 위치를 옮기고 구조를 쪼개는 일을 반복했습니다.
+이번 프로젝트를 진행하면서 가장 시간을 많이 쏟은 부분은 FSD 아키텍처를 적용하고 익숙해지는 과정이었습니다. 처음에는 **레이어/슬라이스/세그먼트** 개념이 낯설어서, **이 함수와 컴포넌트는 어디에 둬야 하지?** 같은 고민을 계속했고 파일 위치를 옮기고 구조를 쪼개는 일을 반복했습니다.
 
-하지만 3일차쯤부터는 구조에 점점 익숙해졌고, 기능을 추가할 때 entities를 조합해 빠르게 확장할 수 있었습니다. 특히 한 번 만들어 둔 로직과 UI가 다른 화면에서도 자연스럽게 재사용되는 경험을 하면서 왜 FSD를 쓰는지를 체감했습니다.
+하지만 3일 차쯤부터는 구조에 점점 익숙해졌고, 기능을 추가할 때 entities를 조합해 빠르게 확장할 수 있었습니다. 특히 한 번 만들어 둔 로직과 UI가 다른 화면에서도 자연스럽게 재사용되는 경험을 하면서 왜 FSD를 쓰는지를 체감했습니다.
 
-결과적으로 이번 과제는 FSD 아키텍처의 장점을 직접 경험한 프로젝트였습니다. 다음 프로젝트에서도 규모나 요구사항에 맞다면 FSD 적용을 적극적으로 고려해볼 생각입니다.
+결과적으로 FSD 아키텍처의 장점을 직접 경험한 프로젝트였습니다. 다음 프로젝트에서도 규모나 요구사항에 맞다면 FSD 적용을 적극적으로 고려해 볼 생각입니다.
