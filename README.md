@@ -1,7 +1,7 @@
 # ☀️ Weather Web App
 
 > **Next.js 16 App Router + OpenWeather API 기반 날씨 웹 애플리케이션**
-
+DemoSite: https://weather-webapp-inky.vercel.app/
 위도/경도 기반 날씨 정보 조회와 북마크 기능을 제공하는 날씨 웹앱입니다. FSD(Feature-Sliced Design) 아키텍처를 적용하여 확장 가능하고 유지보수하기 쉬운 구조로 설계되었습니다.
 
 
