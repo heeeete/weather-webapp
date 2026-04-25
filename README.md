@@ -9,7 +9,6 @@ DemoSite: https://weather-webapp-inky.vercel.app/
 
 ## 📚 목차
 
-- [실행 방법](#-실행-방법)
 - [Tech Stack](#-tech-stack)
 - [프로젝트 구조](#-프로젝트-구조)
 - [기술적 의사결정](#-기술적-의사결정-및-이유)
@@ -17,22 +16,6 @@ DemoSite: https://weather-webapp-inky.vercel.app/
 - [문제 해결](#-문제-해결)
 - [느낀점](#-느낀점)
 
-## 🚀 실행 방법
-
-1. 환경 변수 파일(`.env`) 프로젝트 루트에 삽입
-
-   ```bash
-   NAVER_CLIENT_ID=your_client_id
-   NAVER_CLIENT_SECRET=your_client_secret
-   OPEN_WEATHER_KEY=your_api_key
-   ```
-
-2. 명령어 실행
-   ```bash
-   $ pnpm install
-   $ pnpm build
-   $ pnpm start
-   ```
 
 <br />
 
@@ -468,7 +451,7 @@ pages/README.md
 #### 정리
 
 - 컴포넌트 보관용 폴더는 pages/처럼 Next.js가 라우팅에 사용하는 예약 디렉토리명을 피하는 것이 안전하다.
-- FSD 구조를 사용할 경우 src/ 하위로 구성(src/pages, src/widgets, src/features 등)하면 Next.js 라우팅과 충돌할 가능성이 줄어든다..
+- FSD 구조를 사용할 경우 src/ 하위로 구성(src/pages, src/widgets, src/features 등)하면 Next.js 라우팅과 충돌할 가능성이 줄어든다.
 
 ---
 
